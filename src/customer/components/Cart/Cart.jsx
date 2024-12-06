@@ -6,6 +6,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { getCart } from '../../../State/Cart/Action';
+import LoadingRing from '../loader';
 const Cart = () => {
     const navigate = useNavigate();
     const { cart } = useSelector(store => store)
@@ -23,7 +24,7 @@ const Cart = () => {
                 <div className='flex flex-col col-span-2 space-y-4'>
                     {cart.cart?.cartItems.map((item, index) => (
                         <CartItem key={index} item={item} />
-                    ))}
+                    )) || <LoadingRing />}
                 </div>
 
                 <div className="px-5 sticky top-0 h-[calc(100vh-2rem)] mt-5 lg:mt-0">

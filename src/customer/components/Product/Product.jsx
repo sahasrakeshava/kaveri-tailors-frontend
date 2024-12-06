@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import {
@@ -26,6 +27,10 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux"
 import { findProducts } from '../../../State/Product/Action';
 import Pagination from '@mui/material/Pagination';
+import LoadingBar from '../loader'
+import ErrorPage from './ProductError'
+
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
@@ -33,6 +38,7 @@ function classNames(...classes) {
 export default function Product() {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState({}); // State for selected radio options
+    const [showErrorPage, setShowErrorPage] = useState(false); // Track error page state
     const location = useLocation();
     const navigate = useNavigate();
     const { products } = useSelector(store => store)
@@ -47,6 +53,7 @@ export default function Product() {
     const stock = searchParams.get("stock")
     const param = useParams();
     const dispatch = useDispatch()
+
 
     const handlePaginationChange = (event, value) => {
         const searchParams = new URLSearchParams(location.search)
@@ -323,9 +330,15 @@ export default function Product() {
                             {/* Product grid */}
                             <div className="w-full lg:col-span-4">
                                 <div className="flex flex-wrap justify-center py-5 bg-white">
-                                    {products.products && products.products?.content?.map((item) => (
-                                        <ProductCard key={item.id} product={item} />
-                                    ))}
+                                    {products.isLoading ? (
+                                        <LoadingBar /> // Show loader while fetching products
+                                    ) : products.products?.content?.length === 0 ? (
+                                        <ErrorPage category={param.levelThree} /> // Show error page if no products found
+                                    ) : (
+                                        products.products?.content?.map((item) => (
+                                            <ProductCard key={item.id} product={item} />
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         </div>

@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import { deleteProduct, findProducts } from '../../State/Product/Action';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Button, Card, CardHeader } from '@mui/material';
+import LoadingBar from '../loader';
 
 const ProductTable = () => {
     const dispatch = useDispatch();
@@ -82,7 +83,7 @@ const ProductTable = () => {
                                         <Button sx={{ bgcolor: '#7f11f5', color: 'white' }} onClick={() => handleProductDelete(item._id)}>Delete</Button>
                                     </TableCell>
                                 </TableRow>
-                            )) || <p>Loading Please Wait ....</p>}
+                            )) || <LoadingBar />}
                         </TableBody>
                     </Table>
                 </TableContainer>
