@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/no-redundant-roles */
 import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react';
 import {
@@ -14,6 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AuthModel from '../../Auth/AuthModel';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser, logout } from '../../../State/Auth/Action';
+import SearchModal from './search';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,6 +26,7 @@ export default function Navigation() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate();
   const [openAuthModal, setOpenAuthModal] = useState(false);
+  const [openSearchModal, setOpenSearchModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
   const jwt = localStorage.getItem("jwt")
@@ -384,9 +388,9 @@ export default function Navigation() {
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
-                  <p className='p-2 text-gray-400 hover:text-gray-500'>
+                  <p className='p-2 text-gray-400 hover:text-gray-500' >
                     <span className="sr-only">Search</span>
-                    <MagnifyingGlassIcon aria-hidden="true" className="w-6 h-6" />
+                    <MagnifyingGlassIcon aria-hidden="true" className="w-6 h-6" onClick={() => setOpenSearchModal(true)} />
                   </p>
                 </div>
 
@@ -407,6 +411,7 @@ export default function Navigation() {
         </nav>
       </header>
       <AuthModel handleClose={handleClose} open={openAuthModal} />
+      <SearchModal open={openSearchModal} handleClose={() => setOpenSearchModal(false)} />
     </div>
   )
 }

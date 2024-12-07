@@ -330,7 +330,7 @@ export default function Product() {
                             {/* Product grid */}
                             <div className="w-full lg:col-span-4">
                                 <div className="flex flex-wrap justify-center py-5 bg-white">
-                                    {products.isLoading ? (
+                                    {products.loading ? (
                                         <LoadingBar /> // Show loader while fetching products
                                     ) : products.products?.content?.length === 0 ? (
                                         <ErrorPage category={param.levelThree} /> // Show error page if no products found
