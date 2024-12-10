@@ -6,25 +6,36 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { getCart } from '../../../State/Cart/Action';
-import LoadingRing from '../loader';
+import ErrorCart from './errorCart';
+import Loader from '../loader';
+
 const Cart = () => {
     const navigate = useNavigate();
     const { cart } = useSelector(store => store)
     const dispatch = useDispatch()
+
     const handleCheckout = () => {
         navigate("/checkout?step=2")
     }
+
     useEffect(() => {
         dispatch(getCart())
     }, [cart.updateCartItem, cart.deleteCartItem])
+
     return (
         <div className='mx-auto mt-4 ml-2 mr-2 bg-white border-2 border-purple-700 rounded-lg shadow-lg '>
             <h2 className="mt-4 mb-1 text-3xl font-bold text-center text-purple-800">Cart</h2>
             <div className="relative grid grid-cols-1 py-6 lg:grid-cols-3 lg:px-8">
                 <div className='flex flex-col col-span-2 space-y-4'>
-                    {cart.cart?.cartItems.map((item, index) => (
-                        <CartItem key={index} item={item} />
-                    )) || <LoadingRing />}
+                    {/* Check if cartItems is empty */}
+                    {cart.cart?.cartItems && cart.cart.cartItems.length > 0 ? (
+                        cart.cart.cartItems.map((item, index) => (
+                            <CartItem key={index} item={item} />
+                        ) || <Loader />)
+                    ) : (
+                        // Render ErrorCart if no items are in the cart
+                        <ErrorCart />
+                    )}
                 </div>
 
                 <div className="px-5 sticky top-0 h-[calc(100vh-2rem)] mt-5 lg:mt-0">
@@ -50,8 +61,7 @@ const Cart = () => {
 
                             <div className="flex justify-between text-lg font-bold text-purple-800">
                                 <span>Total Amount</span>
-                                <span>₹{cart.cart?.totalDiscountedPrice
-                                }</span>
+                                <span>₹{cart.cart?.totalDiscountedPrice}</span>
                             </div>
                         </div>
 

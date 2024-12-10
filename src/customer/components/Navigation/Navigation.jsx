@@ -395,8 +395,12 @@ export default function Navigation() {
                 </div>
 
                 {/* Cart */}
-                <div className="flow-root ml-4 lg:ml-6">
-                  <Button className="flex items-center p-2 -m-2 group">
+                <div className="flow-root ml-4 lg:ml-6"
+                  onClick={() => navigate("/cart")}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && navigate("/cart")}>
+                  <Button className="flex items-center p-2 -m-2 group" >
                     <ShoppingBagIcon
                       aria-hidden="true"
                       className="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
