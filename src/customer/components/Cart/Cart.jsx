@@ -12,6 +12,7 @@ import Loader from '../loader';
 const Cart = () => {
     const navigate = useNavigate();
     const { cart } = useSelector(store => store)
+    const { auth } = useSelector(store => store)
     const dispatch = useDispatch()
 
     const handleCheckout = () => {
@@ -65,7 +66,7 @@ const Cart = () => {
                             </div>
                         </div>
 
-                        <Button
+                        {auth.user?._id ? (<Button
                             onClick={handleCheckout}
                             variant="contained"
                             className="w-full mt-5 transition transform duration-600 hover:scale-105"
@@ -82,7 +83,9 @@ const Cart = () => {
                         >
                             Checkout
                             <ShoppingCartCheckoutIcon className="ml-2" />
-                        </Button>
+                        </Button>) : (<p className="w-full mt-5 transition transform duration-600 hover:scale-105">
+                            Log In to Continue. Log in at the top if the Page
+                        </p>)}
                     </div>
                 </div>
             </div>

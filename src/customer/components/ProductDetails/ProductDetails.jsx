@@ -14,6 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProductsById } from '../../../State/Product/Action';
 import { addItemToCart } from '../../../State/Cart/Action';
+
 const product = {
     name: 'Sahasra',
     price: '$192',
@@ -62,7 +63,7 @@ const product = {
     details:
         'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 }
-const reviews = { href: '#', average: 4, totalCount: 117 }
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -74,6 +75,7 @@ export default function ProductDetails() {
     const params = useParams()
     const dispatch = useDispatch()
     const { products } = useSelector(store => store)
+    const { auth } = useSelector(store => store)
 
     const handleAddToCart = () => {
         const data = { productId: params.productId, size: selectedSize.name }
@@ -217,10 +219,48 @@ export default function ProductDetails() {
                                     </fieldset>
                                 </div>
                                 <div className='mt-4'>
-                                    <Button onClick={handleAddToCart} variant="contained" sx={{ px: "2rem", py: "1rem", bgcolor: "#a521de", }} >
-                                        Add To Cart
-                                        <ShoppingCartIcon className="ml-2" />
-                                    </Button>
+                                    {auth.user?._id ? (
+                                        <Button
+                                            onClick={handleAddToCart}
+                                            variant="contained"
+                                            sx={{
+                                                px: "2rem",
+                                                py: "1rem",
+                                                bgcolor: "#a521de",
+                                                color: "white",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                gap: "0.5rem",
+                                                '&:hover': {
+                                                    bgcolor: "#910db6", // Darker purple on hover
+                                                },
+                                            }}
+                                        >
+                                            Add To Cart
+                                            <ShoppingCartIcon />
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            onClick={() => navigate('/login')}  // Redirect to login page
+                                            className="inline-block px-6 py-3 text-white bg-purple-600 rounded-lg text-lg font-medium shadow-lg hover:bg-purple-700 transition-all duration-300"
+                                            sx={{
+                                                px: "2rem",
+                                                py: "1rem",
+                                                bgcolor: "#a521de",
+                                                color: "white",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                gap: "0.5rem",
+                                                '&:hover': {
+                                                    bgcolor: "#910db6", // Darker purple on hover
+                                                },
+                                            }}
+                                        >
+                                            Log in to Add Items
+                                        </Button>
+                                    )}
                                 </div>
                             </form>
                         </div>

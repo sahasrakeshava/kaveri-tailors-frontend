@@ -11,6 +11,9 @@ import {
   UPDATE_CART_ITEM_FAILURE,
   UPDATE_CART_ITEM_REQUEST,
   UPDATE_CART_ITEM_SUCCESS,
+  MERGE_GUEST_CART_REQUEST,
+  MERGE_GUEST_CART_SUCCESS,
+  MERGE_GUEST_CART_FAILURE,
 } from "./ActionType";
 
 const initialstate = {
@@ -62,16 +65,35 @@ export const cartReducer = (state = initialstate, action) => {
       return {
         ...state,
         deleteCartItem: action.payload,
-        loading:false,
+        loading: false,
       };
     case UPDATE_CART_ITEM_SUCCESS:
       return {
         ...state,
-        updateCartItem:action.payload,
+        updateCartItem: action.payload,
         loading: false,
       };
     case REMOVE_CART_ITEM_FAILURE:
     case UPDATE_CART_ITEM_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case MERGE_GUEST_CART_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case MERGE_GUEST_CART_SUCCESS:
+      return {
+        ...state,
+        cart: action.payload,
+        cartItems: action.payload.cartItems,
+        loading: false,
+      };
+    case MERGE_GUEST_CART_FAILURE:
       return {
         ...state,
         error: action.payload,

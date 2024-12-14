@@ -7,6 +7,9 @@ import {
   GET_CART_FAILURE,
   GET_CART_REQUEST,
   GET_CART_SUCCESS,
+  MERGE_GUEST_CART_FAILURE,
+  MERGE_GUEST_CART_REQUEST,
+  MERGE_GUEST_CART_SUCCESS,
   REMOVE_CART_ITEM_FAILURE,
   REMOVE_CART_ITEM_REQUEST,
   REMOVE_CART_ITEM_SUCCESS,
@@ -23,6 +26,19 @@ export const getCart = () => async (dispatch) => {
     console.log("cart data:", data);
   } catch (error) {
     dispatch({ type: GET_CART_FAILURE, payload: error.message });
+  }
+};
+
+export const mergeGuestCart = (guestCartItems) => async (dispatch) => {
+  dispatch({ type: MERGE_GUEST_CART_REQUEST });
+  try {
+    const { data } = await api.post("/api/cart/merge", {
+      cartItems: guestCartItems,
+    });
+    dispatch({ type: MERGE_GUEST_CART_SUCCESS, payload: data });
+    console.log("merge guest cart data:", data);
+  } catch (error) {
+    dispatch({ type: MERGE_GUEST_CART_FAILURE, payload: error.message });
   }
 };
 
