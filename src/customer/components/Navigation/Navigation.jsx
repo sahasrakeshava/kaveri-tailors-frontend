@@ -372,12 +372,6 @@ export default function Navigation() {
                       >
                         Sign In
                       </Button>
-                      <Button
-                        onClick={() => navigate("/register")}
-                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                      >
-                        Register
-                      </Button>
                     </div>
                   )}
                 </div>

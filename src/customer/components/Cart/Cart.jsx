@@ -83,9 +83,23 @@ const Cart = () => {
                         >
                             Checkout
                             <ShoppingCartCheckoutIcon className="ml-2" />
-                        </Button>) : (<p className="w-full mt-5 transition transform duration-600 hover:scale-105">
-                            Log In to Continue. Log in at the top if the Page
-                        </p>)}
+                        </Button>) : (<Button
+                            onClick={() => navigate("/login")}
+                            variant="contained"
+                            className="w-full mt-5 transition transform duration-600 hover:scale-105"
+                            sx={{
+                                px: "2.5rem",
+                                py: ".7rem",
+                                bgcolor: "#a521de",
+                                borderRadius: "10px",
+                                boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                                '&:hover': {
+                                    bgcolor: "#9b1bd9", // Darken the button on hover
+                                }
+                            }}
+                        >
+                            Log In to Continue.
+                        </Button>)}
                     </div>
                 </div>
             </div>
