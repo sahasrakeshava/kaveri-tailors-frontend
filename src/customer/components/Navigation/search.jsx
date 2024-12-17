@@ -11,11 +11,12 @@ import {
     Typography,
     IconButton,
     Button,
+    Fade,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchSearchResults } from "../../../State/search/Action.js"; // Adjust the path if needed
-import CloseIcon from '@mui/icons-material/Close';
-import { useNavigate } from 'react-router-dom';
+import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 import Loader from "../loader.jsx";
 
 const modalStyle = {
@@ -24,12 +25,21 @@ const modalStyle = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "90%",
-    bgcolor: "background.paper",
-    borderRadius: "12px",
-    boxShadow: 24,
+    maxWidth: "800px",
+    borderRadius: "16px",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.25)",
+    backdropFilter: "blur(15px)",
+    background: "#d7cade",
     p: 4,
     overflow: "auto",
     maxHeight: "80vh",
+};
+
+const inputStyle = {
+    borderRadius: "20px",
+    "& .MuiOutlinedInput-root": {
+        borderRadius: "20px",
+    },
 };
 
 const SearchModal = ({ open, handleClose }) => {
@@ -47,143 +57,164 @@ const SearchModal = ({ open, handleClose }) => {
 
     const handleCardClick = (id) => {
         navigate(`/product/${id}`);
-        handleClose()
+        handleClose();
     };
 
     return (
-        <Modal open={open} onClose={handleClose}>
-            <Box sx={modalStyle}>
-                <IconButton
-                    onClick={handleClose}
-                    style={{ position: "absolute", top: "10px", right: "10px" }}
-                    aria-label="close"
-                >
-                    <CloseIcon />
-                </IconButton>
-                <form onSubmit={handleSearch} style={{ display: "flex", marginBottom: "20px", justifyContent: "space-between", marginRight: "30px" }}>
-                    <TextField
-                        label="Search"
-                        variant="outlined"
-                        fullWidth
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
+        <Modal open={open} onClose={handleClose} closeAfterTransition>
+            <Fade in={open}>
+                <Box sx={modalStyle}>
+                    {/* Close Button */}
+                    <IconButton
+                        onClick={handleClose}
                         sx={{
-                            borderRadius: "8px",
-                            "& .MuiOutlinedInput-root": {
-                                borderRadius: "8px",
-                            },
+                            position: "absolute",
+                            top: "10px",
+                            right: "10px",
+                            color: "#555",
                         }}
-                    />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                            borderRadius: "8px",
-                            boxShadow: 2,
-                            padding: "10px 20px",
-                            fontWeight: "bold",
-                            backgroundColor: "#8E24AA", // color adjustment
-                            "&:hover": {
-                                backgroundColor: "#6a1b9a", // darker shade
-                            },
-                            marginLeft: "10px"
+                        aria-label="close"
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
+                    {/* Search Input */}
+                    <form
+                        onSubmit={handleSearch}
+                        style={{
+                            display: "flex",
+                            marginBottom: "20px",
+                            alignItems: "center",
                         }}
                     >
-                        Search
-                    </Button>
-                </form>
+                        <TextField
+                            placeholder="Search for products..."
+                            variant="outlined"
+                            fullWidth
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            sx={inputStyle}
+                        />
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            sx={{
+                                borderRadius: "20px",
+                                marginLeft: "10px",
+                                padding: "10px 24px",
+                                textTransform: "none",
+                                background: "linear-gradient(45deg, #6a11cb, #2575fc)",
+                                "&:hover": {
+                                    background: "linear-gradient(45deg, #5a0fb8, #1f60d0)",
+                                },
+                            }}
+                        >
+                            Search
+                        </Button>
+                    </form>
 
-                {status === "loading" ? (
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-                        <Loader />
-                    </div>
-                ) : status === "succeeded" && results.length > 0 ? (
-                    <List>
-                        {results.map((item, index) => (
-                            <ListItem
-                                key={item.id}
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    borderBottom: "1px solid #ddd",
-                                    padding: "10px 0",
-                                }}
-                                onClick={() => handleCardClick(item._id)} // Navigate on click
-                                style={{ cursor: "pointer" }} // Change cursor on hover to indicate clickable
-                            >
-                                <Card
+                    {/* Loader */}
+                    {status === "loading" && (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100%",
+                            }}
+                        >
+                            <Loader />
+                        </Box>
+                    )}
+
+                    {/* Results */}
+                    {status === "succeeded" && results.length > 0 && (
+                        <List>
+                            {results.map((item) => (
+                                <ListItem
+                                    key={item.id}
                                     sx={{
                                         display: "flex",
-                                        flexDirection: "row",
-                                        width: "100%",
-                                        borderRadius: "12px",
-                                        overflow: "hidden",
-                                        boxShadow: 3,
-                                        backgroundColor: index % 2 === 0 ? "#e0f7fa" : "#fce4ec", // alternating colors
-                                        "&:hover": {
-                                            boxShadow: 6,
-                                        },
+                                        cursor: "pointer",
+                                        padding: "12px 0",
+                                        transition: "all 0.3s ease",
+                                        "&:hover": { transform: "scale(1.02)" },
                                     }}
+                                    onClick={() => handleCardClick(item._id)}
                                 >
-                                    <CardMedia
-                                        component="img"
-                                        alt={item.title}
-                                        image={item.imageUrl}
+                                    <Card
                                         sx={{
-                                            width: "150px",
-                                            height: "150px",
-                                            objectFit: "cover",
-                                        }}
-                                    />
-                                    <CardContent
-                                        sx={{
-                                            flex: 1,
-                                            padding: "16px",
                                             display: "flex",
-                                            flexDirection: "column",
-                                            justifyContent: "center",
+                                            flexDirection: "row",
+                                            width: "100%",
+                                            borderRadius: "16px",
+                                            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.15)",
+                                            overflow: "hidden",
+                                            backgroundColor: "#ffffff",
                                         }}
                                     >
-                                        <Typography
-                                            variant="h6"
+                                        {/* Image */}
+                                        <CardMedia
+                                            component="img"
+                                            alt={item.title}
+                                            image={item.imageUrl}
                                             sx={{
-                                                fontWeight: "bold",
-                                                color: "#333",
-                                                marginBottom: "8px",
+                                                width: "150px",
+                                                height: "150px",
+                                                objectFit: "cover",
+                                            }}
+                                        />
+
+                                        {/* Content */}
+                                        <CardContent
+                                            sx={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                justifyContent: "center",
+                                                padding: "16px",
                                             }}
                                         >
-                                            {item.title}
-                                        </Typography>
-                                        <Typography
-                                            variant="body1"
-                                            sx={{
-                                                color: "#555",
-                                                marginBottom: "4px",
-                                            }}
-                                        >
-                                            <strong>Color:</strong> {item.color}
-                                        </Typography>
-                                        <Typography
-                                            variant="body1"
-                                            sx={{
-                                                color: "#555",
-                                                marginBottom: "4px",
-                                            }}
-                                        >
-                                            <strong>Price:</strong> {item.discountedPrice}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </ListItem>
-                        ))}
-                    </List>
-                ) : status === "succeeded" && results.length === 0 ? (
-                    <Typography align="center" variant="h6" color="textSecondary">No results found</Typography>
-                ) : status === "failed" ? (
-                    <Typography align="center" variant="h6" color="error">Error: {error}</Typography>
-                ) : null}
-            </Box>
+                                            <Typography
+                                                variant="h6"
+                                                sx={{ fontWeight: "bold", color: "#333" }}
+                                            >
+                                                {item.title}
+                                            </Typography>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{ color: "#777", marginTop: "8px" }}
+                                            >
+                                                <strong>Color:</strong> {item.color}
+                                            </Typography>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{ color: "#777", marginTop: "4px" }}
+                                            >
+                                                <strong>Price:</strong> ₹{item.discountedPrice}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </ListItem>
+                            ))}
+                        </List>
+                    )}
+
+                    {/* No Results */}
+                    {status === "succeeded" && results.length === 0 && (
+                        <Typography align="center" variant="h6" color="textSecondary">
+                            No results found
+                        </Typography>
+                    )}
+
+                    {/* Error */}
+                    {status === "failed" && (
+                        <Typography align="center" variant="h6" color="error">
+                            Error: {error}
+                        </Typography>
+                    )}
+                </Box>
+            </Fade>
         </Modal>
     );
 };

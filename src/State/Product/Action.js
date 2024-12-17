@@ -17,6 +17,18 @@ import {
 export const findProducts = (reqData) => async (dispatch) => {
   dispatch({ type: FIND_PRODUCTS_REQUEST });
 
+  // If reqData is undefined, make a call to /api/products without any filters
+  if (!reqData) {
+    try {
+      const { data } = await api.get(`/api/products`);
+      console.log("product data (no filters)", data);
+      dispatch({ type: FIND_PRODUCTS_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: FIND_PRODUCTS_FAILURE, payload: error.message });
+    }
+    return; // Exit the function early
+  }
+
   // Destructure reqData and set default for maxPrice if 0 or undefined
   const {
     colors,

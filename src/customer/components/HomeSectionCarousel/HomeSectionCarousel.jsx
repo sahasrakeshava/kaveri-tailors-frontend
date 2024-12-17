@@ -10,7 +10,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
   const [visibleItems, setVisibleItems] = useState(4); // Default for large screens
   const carouselRef = useRef(null); // Reference for the carousel
 
-  const items = data.slice(0, 16).map((item) => (
+  const items = data?.slice(0, 16).map((item) => (
     <HomeSectionCard product={item} />
   ));
 
@@ -114,7 +114,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
         </Button>}
 
         {/* Next Button */}
-        {activeIndex < items.length - visibleItems && (
+        {activeIndex < items?.length - visibleItems && (
           <Button
             variant="contained"
             onClick={slideNext}
