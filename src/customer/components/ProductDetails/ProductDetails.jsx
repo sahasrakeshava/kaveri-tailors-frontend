@@ -8,12 +8,11 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Button, Box, LinearProgress } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import ProductReviewCard from './ProductReviewCard';
-import { mens_kurta } from '../../../Data/Men/men_kurta';
-import HomeSectionCard from '../HomeSectionCard/HomeSectionCard';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProductsById } from '../../../State/Product/Action';
 import { addItemToCart } from '../../../State/Cart/Action';
+import SimilarProducts from './SimilarProducts';
 
 const product = {
     name: 'Sahasra',
@@ -88,294 +87,240 @@ export default function ProductDetails() {
         dispatch(findProductsById(data))
     }, [params.productId])
     return (
-        <div className="mt-2 ml-2 mr-2 -mb-5 bg-white border-2 border-purple-500 rounded-md lg:px-20">
-            <div className="pt-6">
-                <nav aria-label="Breadcrumb">
-                    <ol role="list" className="flex items-center max-w-2xl px-4 mx-auto space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
-                        {product.breadcrumbs.map((breadcrumb) => (
-                            <li key={breadcrumb.id}>
-                                <div className="flex items-center">
-                                    <a href={breadcrumb.href} className="mr-2 text-sm font-medium text-gray-900">
-                                        {breadcrumb.name}
-                                    </a>
-                                    <svg
-                                        fill="currentColor"
-                                        width={16}
-                                        height={20}
-                                        viewBox="0 0 16 20"
-                                        aria-hidden="true"
-                                        className="w-4 h-5 text-gray-300"
-                                    >
-                                        <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                                    </svg>
-                                </div>
-                            </li>
-                        ))}
-                        <li className="text-sm">
-                            <a href={product.href} aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
-                                {product.name}
-                            </a>
-                        </li>
-                    </ol>
-                </nav>
-                <section className='grid grid-cols-1 pt-10 lg:grid-cols-2 gap-x-8 gap-y-10'>
-                    {/* Image gallery */}
-                    <div className="flex flex-col items-center">
-                        <div className="overflow-hidden rounded-lg max-w-[30rem] max-h-[35rem]">
-                            <img
-                                alt={product.products?.imageUrl.alt}
-                                src={products.product?.imageUrl}
-                                className="object-cover object-center w-full h-full"
-                            />
-                        </div>
-                        <div className="flex flex-wrap justify-center space-x-5">
-                            {product.images.map((item) => <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-[5rem] max-h-[5rem] mt-4">
+        <>
+            <div className="mt-2 ml-2 mr-2 -mb-5 bg-white border-2 border-purple-500 rounded-md lg:px-20">
+                <div className="pt-6">
+                    <section className='grid grid-cols-1 pt-10 lg:grid-cols-2 gap-x-8 gap-y-10'>
+                        {/* Image gallery */}
+                        <div className="flex flex-col items-center">
+                            <div className="overflow-hidden rounded-lg max-w-[30rem] max-h-[35rem]">
                                 <img
-                                    alt={item.alt}
-                                    src={item.src}
+                                    alt="product-image"
+                                    src={products.product?.imageUrl}
                                     className="object-cover object-center w-full h-full"
                                 />
-                            </div>)}
-                        </div>
-                    </div>
-                    {/* Product info */}
-                    <div className="max-w-2xl px-4 pb-6 lg:col-span-1 maxt-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-24">
-                        <div className="lg:col-span-2">
-                            <h1 className="text-lg font-semibold text-gray-900 lg:text-xl">{products.product?.title}</h1>
-                            <h1 className='pt-1 text-lg text-gray-900 lg:text-xl opacity-80'>Brand: {products.product?.brand}</h1>
-                        </div>
-
-                        {/* Options */}
-                        <div className="mt-4 lg:row-span-3 lg:mt-0">
-                            <h2 className="sr-only">Product information</h2>
-
-                            <div className='flex items-center mt-6 space-x-5 text-lg text-gray-900 lg:text-xl'>
-
-                                <p className='font-semibold'>₹{products.product?.discountedPrice}</p>
-                                <p className='line-through opacity-60'>₹{products.product?.price}</p>
-                                <p className='font-mono text-green-500'>{products.product?.discountedPersent}% off</p>
-
                             </div>
-                            {/* Reviews */}
-                            <div className="mt-6">
-                                <div className='flex items-center space-x-3'>
-                                    <Rating name="read-only" value={5.9} readOnly />
-                                    <p className='font-medium text-gray-900 hover:text-purple-600'>56,540 Ratings</p>
-                                    <p className='font-medium text-gray-900 hover:text-purple-600'>|</p>
-                                    <p className='font-medium text-purple-600'>50,123 Reviews</p>
+                            <div className="flex flex-wrap justify-center space-x-5">
+                                {product.images.map((item) => <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-[5rem] max-h-[5rem] mt-4">
+                                    <img
+                                        alt="products-image"
+                                        src={item.src}
+                                        className="object-cover object-center w-full h-full"
+                                    />
+                                </div>)}
+                            </div>
+                        </div>
+                        {/* Product info */}
+                        <div className="max-w-2xl px-4 pb-6 lg:col-span-1 maxt-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-24">
+                            <div className="lg:col-span-2">
+                                <h1 className="text-lg font-semibold text-gray-900 lg:text-xl">{products.product?.title}</h1>
+                                <h1 className='pt-1 text-lg text-gray-900 lg:text-xl opacity-80'>Brand: {products.product?.brand}</h1>
+                                <h1 className='pt-1 text-lg text-gray-900 lg:text-xl opacity-80'>Category: {products.product?.category?.name?.replace(/[-/_|:]/g, ' ')}</h1>
+                            </div>
+
+                            {/* Options */}
+                            <div className="mt-4 lg:row-span-3 lg:mt-0">
+                                <h2 className="sr-only">Product information</h2>
+
+                                <div className='flex items-center mt-6 space-x-5 text-lg text-gray-900 lg:text-xl'>
+
+                                    <p className='font-semibold'>₹{products.product?.discountedPrice}</p>
+                                    <p className='line-through opacity-60'>₹{products.product?.price}</p>
+                                    <p className='font-mono text-green-500'>{products.product?.discountedPersent}% off</p>
+
                                 </div>
-                            </div>
-
-                            <form className="mt-10">
-
-                                {/* Sizes */}
-                                <div className="mt-10">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-medium text-gray-900">Size</h3>
+                                {/* Reviews */}
+                                <div className="mt-6">
+                                    <div className='flex items-center space-x-3'>
+                                        <Rating
+                                            name="read-only"
+                                            value={products.product?.ratings?.reduce((sum, rating) => sum + rating.rating, 0) / (products.product?.ratings?.length || 1)}
+                                            readOnly
+                                        />
+                                        <p className='font-medium text-gray-900 hover:text-purple-600'>
+                                            {products.product?.numRatings || 0} Ratings
+                                        </p>
+                                        <p className='font-medium text-gray-900 hover:text-purple-600'>|</p>
+                                        <p className='font-medium text-purple-600'>
+                                            {products.product?.reviews?.length || 0} Reviews
+                                        </p>
                                     </div>
+                                </div>
 
-                                    <fieldset aria-label="Choose a size" className="mt-4">
-                                        <RadioGroup
-                                            value={selectedSize}
-                                            onChange={setSelectedSize}
-                                            className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
-                                        >
-                                            {product.sizes.map((size) => (
-                                                <Radio
-                                                    key={size.name}
-                                                    value={size}
-                                                    disabled={!size.inStock}
-                                                    className={classNames(
-                                                        size.inStock
-                                                            ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
-                                                            : 'cursor-not-allowed bg-gray-50 text-gray-200',
-                                                        'group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500 sm:flex-1 sm:py-6',
-                                                    )}
-                                                >
-                                                    <span>{size.name}</span>
-                                                    {size.inStock ? (
-                                                        <span
-                                                            aria-hidden="true"
-                                                            className="pointer-events-none absolute -inset-px rounded-md border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-indigo-500"
-                                                        />
-                                                    ) : (
-                                                        <span
-                                                            aria-hidden="true"
-                                                            className="absolute border-2 border-gray-200 rounded-md pointer-events-none -inset-px"
-                                                        >
-                                                            <svg
-                                                                stroke="currentColor"
-                                                                viewBox="0 0 100 100"
-                                                                preserveAspectRatio="none"
-                                                                className="absolute inset-0 w-full h-full text-gray-200 stroke-2"
+                                <form className="mt-10">
+
+                                    {/* Sizes */}
+                                    <div className="mt-10">
+                                        <div className="flex items-center justify-between">
+                                            <h3 className="text-sm font-medium text-gray-900">Size</h3>
+                                        </div>
+
+                                        <fieldset aria-label="Choose a size" className="mt-4">
+                                            <RadioGroup
+                                                value={selectedSize}
+                                                onChange={setSelectedSize}
+                                                className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
+                                            >
+                                                {product.sizes.map((size) => (
+                                                    <Radio
+                                                        key={size.name}
+                                                        value={size}
+                                                        disabled={!size.inStock}
+                                                        className={classNames(
+                                                            size.inStock
+                                                                ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
+                                                                : 'cursor-not-allowed bg-gray-50 text-gray-200',
+                                                            'group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500 sm:flex-1 sm:py-6',
+                                                        )}
+                                                    >
+                                                        <span>{size.name}</span>
+                                                        {size.inStock ? (
+                                                            <span
+                                                                aria-hidden="true"
+                                                                className="pointer-events-none absolute -inset-px rounded-md border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-indigo-500"
+                                                            />
+                                                        ) : (
+                                                            <span
+                                                                aria-hidden="true"
+                                                                className="absolute border-2 border-gray-200 rounded-md pointer-events-none -inset-px"
                                                             >
-                                                                <line x1={0} x2={100} y1={100} y2={0} vectorEffect="non-scaling-stroke" />
-                                                            </svg>
-                                                        </span>
-                                                    )}
-                                                </Radio>
-                                            ))}
-                                        </RadioGroup>
-                                    </fieldset>
-                                </div>
-                                <div className='mt-4'>
-                                    {auth.user?._id ? (
-                                        <Button
-                                            onClick={handleAddToCart}
-                                            variant="contained"
-                                            sx={{
-                                                px: "2rem",
-                                                py: "1rem",
-                                                bgcolor: "#a521de",
-                                                color: "white",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                gap: "0.5rem",
-                                                '&:hover': {
-                                                    bgcolor: "#910db6", // Darker purple on hover
-                                                },
-                                            }}
-                                        >
-                                            Add To Cart
-                                            <ShoppingCartIcon />
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            onClick={() => navigate('/login')}  // Redirect to login page
-                                            className="inline-block px-6 py-3 text-white bg-purple-600 rounded-lg text-lg font-medium shadow-lg hover:bg-purple-700 transition-all duration-300"
-                                            sx={{
-                                                px: "2rem",
-                                                py: "1rem",
-                                                bgcolor: "#a521de",
-                                                color: "white",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                gap: "0.5rem",
-                                                '&:hover': {
-                                                    bgcolor: "#910db6", // Darker purple on hover
-                                                },
-                                            }}
-                                        >
-                                            Log in to Add Items
-                                        </Button>
-                                    )}
-                                </div>
-                            </form>
-                        </div>
-
-                        <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+                                                                <svg
+                                                                    stroke="currentColor"
+                                                                    viewBox="0 0 100 100"
+                                                                    preserveAspectRatio="none"
+                                                                    className="absolute inset-0 w-full h-full text-gray-200 stroke-2"
+                                                                >
+                                                                    <line x1={0} x2={100} y1={100} y2={0} vectorEffect="non-scaling-stroke" />
+                                                                </svg>
+                                                            </span>
+                                                        )}
+                                                    </Radio>
+                                                ))}
+                                            </RadioGroup>
+                                        </fieldset>
+                                    </div>
+                                    <div className='mt-4'>
+                                        {auth.user?._id ? (
+                                            <Button
+                                                onClick={handleAddToCart}
+                                                variant="contained"
+                                                sx={{
+                                                    px: "2rem",
+                                                    py: "1rem",
+                                                    bgcolor: "#a521de",
+                                                    color: "white",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    gap: "0.5rem",
+                                                    '&:hover': {
+                                                        bgcolor: "#910db6", // Darker purple on hover
+                                                    },
+                                                }}
+                                            >
+                                                Add To Cart
+                                                <ShoppingCartIcon />
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                onClick={() => navigate('/login')}  // Redirect to login page
+                                                className="inline-block px-6 py-3 text-lg font-medium text-white transition-all duration-300 bg-purple-600 rounded-lg shadow-lg hover:bg-purple-700"
+                                                sx={{
+                                                    px: "2rem",
+                                                    py: "1rem",
+                                                    bgcolor: "#a521de",
+                                                    color: "white",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    gap: "0.5rem",
+                                                    '&:hover': {
+                                                        bgcolor: "#910db6", // Darker purple on hover
+                                                    },
+                                                }}
+                                            >
+                                                Log in to Add Items
+                                            </Button>
+                                        )}
+                                    </div>
+                                </form>
+                            </div>
                             {/* Description and details */}
-                            <div>
-                                <h3 className="sr-only">Description</h3>
-
-                                <div className="space-y-6">
-                                    <p className="text-base text-gray-900">{product.description}</p>
-                                </div>
-                            </div>
-
                             <div className="mt-10">
-                                <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
-
-                                <div className="mt-4">
-                                    <ul role="list" className="pl-4 space-y-2 text-sm list-disc">
-                                        {product.highlights.map((highlight) => (
-                                            <li key={highlight} className="text-gray-400">
-                                                <span className="text-gray-600">{highlight}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="mt-10">
-                                <h2 className="text-sm font-medium text-gray-900">Details</h2>
+                                <h2 className="text-sm font-medium text-gray-900">Description</h2>
 
                                 <div className="mt-4 space-y-6">
-                                    <p className="text-sm text-gray-600">{product.details}</p>
+                                    <p className="text-sm text-gray-600">{products.product?.description}</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-                {/* rating and reviews */}
-                <section>
-                    <h1 className='pb-4 text-lg font-semibold'>Recent Reviews & Ratings:</h1>
-                    <div className='p-5 border'>
-                        <Grid container spacing={7}>
-                            <Grid item xs={7}>
-                                <div className="space-y-5">
-                                    {[1, 1, 1, 1, 1, 1].map((item) => <ProductReviewCard />)}
-                                </div>
+                    </section>
+                    {/* rating and reviews */}
+                    <section>
+                        <h1 className='pb-4 text-lg font-semibold'>Recent Reviews & Ratings:</h1>
+                        <div className='p-5 border'>
+                            <Grid container spacing={7}>
+                                <Grid item xs={7}>
+                                    <div className="space-y-5">
+                                        {[1, 1, 1, 1, 1, 1].map((item) => <ProductReviewCard />)}
+                                    </div>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <h1 className='pb-1 text-xl font-semibold'>Product Ratings</h1>
+                                    <div className='flex items-center space-x-3'>
+                                        <Rating value={4.6} precision={.5} readOnly />
+                                        <p className="opacity-60">56,540 Ratings</p>
+                                    </div>
+                                    <Box className="mt-5">
+                                        <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
+                                            <Grid item xs={2} sx={{ minWidth: 100 }}>
+                                                <p>Excellent</p>
+                                            </Grid>
+                                            <Grid item xs={7}>
+                                                <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={80} color='success' />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
+                                            <Grid item xs={2} sx={{ minWidth: 100 }}>
+                                                <p>Very Good</p>
+                                            </Grid>
+                                            <Grid item xs={7}>
+                                                <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={70} color='success' />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
+                                            <Grid item xs={2} sx={{ minWidth: 100 }}>
+                                                <p>Good</p>
+                                            </Grid>
+                                            <Grid item xs={7}>
+                                                <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={50} />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
+                                            <Grid item xs={2} sx={{ minWidth: 100 }}>
+                                                <p>Average</p>
+                                            </Grid>
+                                            <Grid item xs={7}>
+                                                <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={30} color='warning' />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
+                                            <Grid item xs={2} sx={{ minWidth: 100 }}>
+                                                <p>Poor</p>
+                                            </Grid>
+                                            <Grid item xs={7}>
+                                                <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={20} color='error' />
+                                            </Grid>
+                                        </Grid>
+                                    </Box>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={5}>
-                                <h1 className='pb-1 text-xl font-semibold'>Product Ratings</h1>
-                                <div className='flex items-center space-x-3'>
-                                    <Rating value={4.6} precision={.5} readOnly />
-                                    <p className="opacity-60">56,540 Ratings</p>
-                                </div>
-                                <Box className="mt-5">
-                                    <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
-                                        <Grid item xs={2} sx={{ minWidth: 100 }}>
-                                            <p>Excellent</p>
-                                        </Grid>
-                                        <Grid item xs={7}>
-                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={80} color='success' />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
-                                        <Grid item xs={2} sx={{ minWidth: 100 }}>
-                                            <p>Very Good</p>
-                                        </Grid>
-                                        <Grid item xs={7}>
-                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={70} color='success' />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
-                                        <Grid item xs={2} sx={{ minWidth: 100 }}>
-                                            <p>Good</p>
-                                        </Grid>
-                                        <Grid item xs={7}>
-                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={50} />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
-                                        <Grid item xs={2} sx={{ minWidth: 100 }}>
-                                            <p>Average</p>
-                                        </Grid>
-                                        <Grid item xs={7}>
-                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={30} color='warning' />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container alignItems="center" sx={{ marginBottom: 3 }}> {/* Adding space between rows */}
-                                        <Grid item xs={2} sx={{ minWidth: 100 }}>
-                                            <p>Poor</p>
-                                        </Grid>
-                                        <Grid item xs={7}>
-                                            <LinearProgress sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }} variant="determinate" value={20} color='error' />
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </section>
-                {/* similar Products */}
-                <section className="pt-10">
-                    <div className="items-center text-center">
-                        <h1 className="items-center py-5 text-xl font-bold">Similar Products</h1>
-                        <hr className="w-1/2 mx-auto mb-4 border-t-2 border-gray-600 rounded-lg " />
-                    </div>
-                    <div className="flex flex-wrap mt-2 mb-4 -mx-2">
-                        {mens_kurta.map((item, index) => (
-                            <div className="w-full p-2 sm:w-1/2 lg:w-1/4" key={index}>
-                                <HomeSectionCard product={item} />
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                        </div>
+                    </section>
+                    {/* similar Products */}
+                    <SimilarProducts />
+                </div>
             </div>
-        </div>
+        </>
     )
 }

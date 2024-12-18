@@ -81,7 +81,7 @@ export default function Navigation() {
       >
         <div className="p-4">
           <div className="flex items-center justify-between mb-4">
-            <span className="font-bold text-lg">Menu</span>
+            <span className="text-lg font-bold">Menu</span>
             <button
               type="button"
               onClick={() => setOpen(false)}
@@ -101,7 +101,7 @@ export default function Navigation() {
               />
             </a>
           </div>
-          <div className="space-y-4 mt-4">
+          <div className="mt-4 space-y-4">
             {navigation.categories.map((category) => (
               <div key={category.name}>
                 <Disclosure>
@@ -129,7 +129,7 @@ export default function Navigation() {
                                         () => setOpen(false)
                                       );
                                     }}
-                                    className="text-sm text-gray-700 hover:text-gray-900 cursor-pointer"
+                                    className="text-sm text-gray-700 cursor-pointer hover:text-gray-900"
                                   >
                                     {item.name}
                                   </p>
@@ -148,7 +148,7 @@ export default function Navigation() {
               <a
                 key={page.name}
                 href={page.href}
-                className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
               >
                 {page.name}
               </a>
@@ -294,7 +294,7 @@ export default function Navigation() {
               </Popover.Group>
 
               <div className="flex items-center ml-auto">
-                <div className="flex items-center ml-auto sm:mr-10">
+                <div className="flex items-center ml-auto sm:mr-4">
                   {auth.user?.firstName ? (
                     <div>
                       <Avatar
