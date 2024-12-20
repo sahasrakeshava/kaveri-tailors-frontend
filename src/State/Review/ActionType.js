@@ -1,0 +1,12 @@
+// ActionType.js
+export const CREATE_PRODUCT = "CREATE_PRODUCT";
+export const FETCH_PRODUCT = "FETCH_PRODUCT";
+export const CREATE_PRODUCT_SUCCESS = "CREATE_PRODUCT_SUCCESS";
+export const FETCH_PRODUCT_SUCCESS = "FETCH_PRODUCT_SUCCESS";
+export const API_ERROR = "API_ERROR";
+
+// Review-specific action types
+export const CREATE_REVIEW = "CREATE_REVIEW";
+export const FETCH_REVIEWS = "FETCH_REVIEWS";
+export const CREATE_REVIEW_SUCCESS = "CREATE_REVIEW_SUCCESS";
+export const FETCH_REVIEWS_SUCCESS = "FETCH_REVIEWS_SUCCESS";

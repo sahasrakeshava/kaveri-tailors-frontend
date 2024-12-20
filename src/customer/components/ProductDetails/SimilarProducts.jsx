@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { findProducts } from '../../../State/Product/Action';
 import HomeSectionCard from '../HomeSectionCard/HomeSectionCard';
+import Loader from '../loader';
 
 const SimilarProducts = () => {
     const { products } = useSelector(store => store)
@@ -23,7 +24,7 @@ const SimilarProducts = () => {
                         <div className="w-full p-2 sm:w-1/2 lg:w-1/4" key={index}>
                             <HomeSectionCard product={item} />
                         </div>
-                    ))}
+                    ) || <Loader />)}
                 </div>
             </section>
         </div>

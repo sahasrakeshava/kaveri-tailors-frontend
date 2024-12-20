@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { findProductsById } from '../../../State/Product/Action';
 import { addItemToCart } from '../../../State/Cart/Action';
 import SimilarProducts from './SimilarProducts';
+import { fetchReviews } from '../../../State/Review/Action';
 
 const product = {
     name: 'Sahasra',
@@ -75,6 +76,12 @@ export default function ProductDetails() {
     const dispatch = useDispatch()
     const { products } = useSelector(store => store)
     const { auth } = useSelector(store => store)
+    const { reviews } = useSelector(store => store)
+
+    useEffect(() => {
+        dispatch(fetchReviews(products.product?._id))
+        console.log("reviews:", reviews?.reviews)
+    }, [dispatch, products.product?._id])
 
     const handleAddToCart = () => {
         const data = { productId: params.productId, size: selectedSize.name }
