@@ -13,7 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { findProductsById } from '../../../State/Product/Action';
 import { addItemToCart } from '../../../State/Cart/Action';
 import SimilarProducts from './SimilarProducts';
-import { fetchReviews } from '../../../State/Review/Action';
+import Loader from '../loader'; // Adjust the path as necessary
+import { createReview, fetchReviews } from '../../../State/Review/Action';
 
 const product = {
     name: 'Sahasra',
@@ -71,6 +72,7 @@ function classNames(...classes) {
 
 export default function ProductDetails() {
     const [selectedSize, setSelectedSize] = useState("")
+    const [newReview, setNewReview] = useState({ rating: 0, review: '' });
     const navigate = useNavigate();
     const params = useParams()
     const dispatch = useDispatch()
@@ -78,10 +80,17 @@ export default function ProductDetails() {
     const { auth } = useSelector(store => store)
     const { reviews } = useSelector(store => store)
 
-    useEffect(() => {
-        dispatch(fetchReviews(products.product?._id))
-        console.log("reviews:", reviews?.reviews)
-    }, [dispatch, products.product?._id])
+    const handleSubmitReview = (e) => {
+        e.preventDefault();
+        const reviewData = {
+            productId: params.productId,
+            review: newReview.review,
+            user: auth.user?._id
+        };
+        dispatch(createReview(reviewData));
+        setNewReview({ review: ' ' });
+    };
+
 
     const handleAddToCart = () => {
         const data = { productId: params.productId, size: selectedSize.name }
@@ -93,6 +102,12 @@ export default function ProductDetails() {
         const data = { productId: params.productId }
         dispatch(findProductsById(data))
     }, [params.productId])
+
+    useEffect(() => {
+        dispatch(fetchReviews(products.product?._id))
+        console.log("reviews:", reviews?.reviews)
+    }, [dispatch, products.product?._id])
+
     return (
         <>
             <div className="mt-2 ml-2 mr-2 -mb-5 bg-white border-2 border-purple-500 rounded-md lg:px-20">
@@ -262,14 +277,50 @@ export default function ProductDetails() {
                             </div>
                         </div>
                     </section>
+                    {/* Create Review */}
+                    <section className='mt-4 sm:pl-4'>
+                        <h1 className='pb-4 text-lg font-semibold'>Add a Review:</h1>
+                        <div className='p-5 border'>
+                            <form onSubmit={handleSubmitReview}>
+                                <div className='mb-4'>
+                                    <label htmlFor='review' className='block text-sm font-medium text-gray-700'>
+                                        Add your Review
+                                    </label>
+                                    <textarea
+                                        id='review'
+                                        name='review'
+                                        rows='4'
+                                        className='block w-full p-2 mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                                        value={newReview.review}
+                                        onChange={(e) => setNewReview({ ...newReview, review: e.target.value })}
+                                    />
+                                </div>
+                                <Button
+                                    type='submit'
+                                    variant='contained'
+                                    sx={{
+                                        px: '2rem',
+                                        py: '1rem',
+                                        bgcolor: '#a521de',
+                                        color: 'white',
+                                        '&:hover': {
+                                            bgcolor: '#910db6',
+                                        },
+                                    }}
+                                >
+                                    Submit Review
+                                </Button>
+                            </form>
+                        </div>
+                    </section>
                     {/* rating and reviews */}
-                    <section>
+                    <section className='mt-4 sm:pl-4'>
                         <h1 className='pb-4 text-lg font-semibold'>Recent Reviews & Ratings:</h1>
                         <div className='p-5 border'>
                             <Grid container spacing={7}>
                                 <Grid item xs={7}>
                                     <div className="space-y-5">
-                                        {[1, 1, 1, 1, 1, 1].map((item) => <ProductReviewCard />)}
+                                        {reviews?.reviews?.map((item) => <ProductReviewCard reviews={item} /> || <Loader />)}
                                     </div>
                                 </Grid>
                                 <Grid item xs={5}>

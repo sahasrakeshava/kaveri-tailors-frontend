@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import axios from "axios";
 import { API_BASE_URL } from "../../config/apiConfig";
 import {
@@ -68,6 +69,22 @@ export const getUser = (jwt) => async (dispatch) => {
     dispatch(getUserFailure(error.message));
   }
 };
+
+  export const getUserById = (userId, jwt) => async (dispatch) => {
+    dispatch(getUserRequest());
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      const user = response.data;
+      console.log("user", user);
+      dispatch(getUserSuccess(user));
+    } catch (error) {
+      dispatch(getUserFailure(error.message));
+    }
+  };
 
 export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT, payload: null });

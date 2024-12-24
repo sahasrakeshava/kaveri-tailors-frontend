@@ -13,6 +13,7 @@ export const createReview = (reviewData) => async (dispatch) => {
   dispatch({ type: CREATE_REVIEW });
 
   try {
+    console.log("data and id:", reviewData);
     const response = await api.post("api/reviews/create", reviewData);
     dispatch({ type: CREATE_REVIEW_SUCCESS, payload: response.data });
   } catch (error) {
@@ -25,6 +26,7 @@ export const fetchReviews = (productId) => async (dispatch) => {
   dispatch({ type: FETCH_REVIEWS });
 
   try {
+    console.log("pid:", productId);
     const response = await api.get(`api/reviews/product/${productId}`);
     dispatch({ type: FETCH_REVIEWS_SUCCESS, payload: response.data });
   } catch (error) {
