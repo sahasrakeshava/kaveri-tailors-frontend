@@ -72,7 +72,7 @@ function classNames(...classes) {
 
 export default function ProductDetails() {
     const [selectedSize, setSelectedSize] = useState("")
-    const [newReview, setNewReview] = useState({ rating: 0, review: '' });
+    const [newReview, setNewReview] = useState({ review: '', rating: 0 });
     const navigate = useNavigate();
     const params = useParams()
     const dispatch = useDispatch()
@@ -80,16 +80,14 @@ export default function ProductDetails() {
     const { auth } = useSelector(store => store)
     const { reviews } = useSelector(store => store)
 
-    const handleSubmitReview = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const reviewData = {
-            productId: params.productId,
-            review: newReview.review,
-            user: auth.user?._id
-        };
-        dispatch(createReview(reviewData));
-        setNewReview({ review: ' ' });
-    };
+        const data = { productId: params.productId, review: newReview.review, rating: newReview.rating, user: auth.user?._id }
+        console.log("reviewData", data)
+        dispatch(createReview(data))
+        setNewReview({ review: '', rating: 0 })
+    }
+
 
 
     const handleAddToCart = () => {
@@ -107,6 +105,7 @@ export default function ProductDetails() {
         dispatch(fetchReviews(products.product?._id))
         console.log("reviews:", reviews?.reviews)
     }, [dispatch, products.product?._id])
+
 
     return (
         <>
@@ -278,50 +277,72 @@ export default function ProductDetails() {
                         </div>
                     </section>
                     {/* Create Review */}
-                    <section className='mt-4 sm:pl-4'>
-                        <h1 className='pb-4 text-lg font-semibold'>Add a Review:</h1>
-                        <div className='p-5 border'>
-                            <form onSubmit={handleSubmitReview}>
-                                <div className='mb-4'>
-                                    <label htmlFor='review' className='block text-sm font-medium text-gray-700'>
-                                        Add your Review
+                    <section className="mt-6 sm:pl-6">
+                        <h1 className="pb-4 text-xl font-bold text-gray-800">Add a Review</h1>
+                        <div className="p-6 bg-white border rounded-lg shadow-sm">
+                            <form onSubmit={handleSubmit} className="space-y-6">
+
+                                <div>
+                                    <label
+                                        htmlFor="review"
+                                        className="block text-base font-medium text-gray-700"
+                                    >
+                                        Your Review
                                     </label>
                                     <textarea
-                                        id='review'
-                                        name='review'
-                                        rows='4'
-                                        className='block w-full p-2 mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                                        id="review"
+                                        name="review"
+                                        rows="4"
+                                        placeholder="Write your thoughts here..."
+                                        className="block w-full px-4 py-3 mt-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
                                         value={newReview.review}
                                         onChange={(e) => setNewReview({ ...newReview, review: e.target.value })}
-                                    />
+                                    ></textarea>
                                 </div>
-                                <Button
-                                    type='submit'
-                                    variant='contained'
-                                    sx={{
-                                        px: '2rem',
-                                        py: '1rem',
-                                        bgcolor: '#a521de',
-                                        color: 'white',
-                                        '&:hover': {
-                                            bgcolor: '#910db6',
-                                        },
-                                    }}
-                                >
-                                    Submit Review
-                                </Button>
+                                <div>
+                                    <label
+                                        htmlFor="rating"
+                                        className="block text-base font-medium text-gray-700"
+                                    >
+                                        Rate the Product
+                                    </label>
+                                    <div className="flex items-center mt-2">
+                                        <Rating
+                                            name="rating"
+                                            value={newReview.rating}
+                                            onChange={(event, newValue) => {
+                                                setNewReview({ ...newReview, rating: newValue });
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+
+                                <div className="flex justify-end">
+                                    <button
+                                        type="submit"
+                                        className="px-6 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring focus:ring-indigo-300"
+                                    >
+                                        Submit Review & Rating
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </section>
+
+
+
                     {/* rating and reviews */}
                     <section className='mt-4 sm:pl-4'>
                         <h1 className='pb-4 text-lg font-semibold'>Recent Reviews & Ratings:</h1>
                         <div className='p-5 border'>
                             <Grid container spacing={7}>
                                 <Grid item xs={7}>
-                                    <div className="space-y-5">
-                                        {reviews?.reviews?.map((item) => <ProductReviewCard reviews={item} /> || <Loader />)}
-                                    </div>
+                                    {<div className="space-y-5">
+                                        {reviews?.reviews?.map((item) => (
+                                            <ProductReviewCard reviews={item} /> || <Loader />
+                                        ))}
+                                    </div>}
                                 </Grid>
                                 <Grid item xs={5}>
                                     <h1 className='pb-1 text-xl font-semibold'>Product Ratings</h1>
