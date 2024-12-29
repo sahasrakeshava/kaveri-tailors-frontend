@@ -10,7 +10,7 @@ import ProductDetails from "../customer/components/ProductDetails/ProductDetails
 import Product from "../customer/components/Product/Product";
 import HomePage from "../customer/pages/HomePage/HomePage";
 import PaymentSuccess from '../customer/components/Payment/PaymentSuccess';
-import Navigation from "../customer/components/Navigation/Navigation";
+import Navigation from "../customer/components/Navigation/Navigation.jsx";
 import ErrorPage from './error'; // Ensure the import name matches the file export
 
 const CustomerRouters = () => {

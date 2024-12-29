@@ -156,42 +156,29 @@ const CreateProductForm = () => {
                                 value={productData.topLevelCategory}
                                 onChange={handlechange}
                             >
-                                <MenuItem value="men">Men</MenuItem>
-                                <MenuItem value='women'>Women</MenuItem>
-                                <MenuItem value='kids'>Kids</MenuItem>
+                                <MenuItem value="categories">Categories</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                        <FormControl fullWidth sx={{ marginBottom: '1rem', backgroundColor: '#ffffff', borderRadius: '5px' }}>
-                            <InputLabel>Second Level Category</InputLabel>
-                            <Select
-                                name="secondLevelCategory"
-                                value={productData.secondLevelCategory}
-                                onChange={handlechange}
-                            >
-                                <MenuItem value="clothing">Clothing</MenuItem>
-                                <MenuItem value='accessories'>Accessories</MenuItem>
-                                <MenuItem value='brands'>Brands</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <TextField
+                            fullWidth
+                            label="Second Level Category"
+                            name="secondLevelCategory"
+                            value={productData.secondLevelCategory}
+                            onChange={handlechange}
+                            sx={{ backgroundColor: '#ffffff', borderRadius: '5px' }}
+                        />
                     </Grid>
                     <Grid item xs={12}>
-                        <FormControl fullWidth sx={{ marginBottom: '1rem', backgroundColor: '#ffffff', borderRadius: '5px' }}>
-                            <InputLabel>Third Level Category</InputLabel>
-                            <Select
-                                name="thirdLevelCategory"
-                                value={productData.thirdLevelCategory}
-                                onChange={handlechange}
-                            >
-                                <MenuItem value="top">Tops</MenuItem>
-                                <MenuItem value='women_dress'>Dresses</MenuItem>
-                                <MenuItem value='t-shirts'>T-Shirts</MenuItem>
-                                <MenuItem value='saree'>Saree</MenuItem>
-                                <MenuItem value='lengha_choli'>Lengha Choli</MenuItem>
-                                <MenuItem value='mens_kurta'>Mens Kurta</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <TextField
+                            fullWidth
+                            label="Third Level Category"
+                            name="thirdLevelCategory"
+                            value={productData.thirdLevelCategory}
+                            onChange={handlechange}
+                            sx={{ backgroundColor: '#ffffff', borderRadius: '5px' }}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField

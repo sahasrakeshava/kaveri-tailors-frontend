@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import Navigation from '../customer/components/Navigation/Navigation';
+import Navigation from '../customer/components/Navigation/Navigation.jsx';
 import AdminDashboard from "./components/Dashboard";
 import CreateProductForm from "./components/CreateProductForm";
 import ProductTable from "./components/ProductTable";

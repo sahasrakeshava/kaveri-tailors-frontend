@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Avatar, Button, Drawer, Menu, MenuItem } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
-import { navigation } from '../../../Data/navigation'
+import { navigation } from '../../../Data/navigation.js'
 import logo from './logo.png'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -144,15 +144,6 @@ export default function Navigation() {
                 </Disclosure>
               </div>
             ))}
-            {navigation.pages.map((page) => (
-              <a
-                key={page.name}
-                href={page.href}
-                className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
-              >
-                {page.name}
-              </a>
-            ))}
           </div>
         </div>
       </Drawer>
@@ -220,26 +211,6 @@ export default function Navigation() {
                               <div className="relative bg-white">
                                 <div className="px-8 mx-auto max-w-7xl">
                                   <div className="grid grid-cols-2 py-16 gap-x-8 gap-y-10">
-                                    <div className="grid grid-cols-2 col-start-2 gap-x-8">
-                                      {category.featured.map((item) => (
-                                        <div key={item.name} className="relative text-base group sm:text-sm">
-                                          <div className="overflow-hidden bg-gray-100 rounded-lg aspect-h-1 aspect-w-1 group-hover:opacity-75">
-                                            <img
-                                              alt={item.imageAlt}
-                                              src={item.imageSrc}
-                                              className="object-cover object-center"
-                                            />
-                                          </div>
-                                          <a href={item.href} className="block mt-6 font-medium text-gray-900">
-                                            <span aria-hidden="true" className="absolute inset-0 z-10" />
-                                            {item.name}
-                                          </a>
-                                          <p aria-hidden="true" className="mt-1">
-                                            Shop now
-                                          </p>
-                                        </div>
-                                      ))}
-                                    </div>
                                     <div className="grid grid-cols-3 row-start-1 text-sm gap-x-8 gap-y-10">
                                       {category.sections.map((section) => (
                                         <div key={section.name}>
@@ -279,16 +250,6 @@ export default function Navigation() {
                         </>
                       )}
                     </Popover>
-                  ))}
-
-                  {navigation.pages.map((page) => (
-                    <a
-                      key={page.name}
-                      href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {page.name}
-                    </a>
                   ))}
                 </div>
               </Popover.Group>

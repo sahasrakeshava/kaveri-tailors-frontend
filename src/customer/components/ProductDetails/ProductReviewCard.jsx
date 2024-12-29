@@ -8,9 +8,9 @@ const ProductReviewCard = ({ reviews }) => {
 
     const dispatch = useDispatch()
     useEffect(() => {
-        const userId = reviews?.user
+        const userId = reviews?.user._id
+        console.log("user:", userId)
         dispatch(getUserById(userId))
-
     }, [reviews])
     return (
 
@@ -18,7 +18,7 @@ const ProductReviewCard = ({ reviews }) => {
             <Grid container spacing={2} gap={3}>
                 <Grid item xs={1}>
                     <Box>
-                        <Avatar className='text-white' sx={{ width: 56, height: 56, bgcolor: "#a521de" }}>{auth?.user.firstName[0].toUpperCase() || 'ks'}</Avatar>
+                        <Avatar className='text-white' sx={{ width: 56, height: 56, bgcolor: "#a521de" }}>{auth?.user?.firstName[0].toUpperCase() || 'k'}</Avatar>
                     </Box>
                 </Grid>
                 <Grid item xs={9}>

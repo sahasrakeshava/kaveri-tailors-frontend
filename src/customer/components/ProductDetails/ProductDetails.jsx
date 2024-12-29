@@ -82,7 +82,7 @@ export default function ProductDetails() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = { productId: params.productId, review: newReview.review, rating: newReview.rating, user: auth.user?._id }
+        const data = { productId: params.productId, review: newReview.review, rating: newReview.rating, user: auth.user?._id || "675854deca75b7b748d39d12" }
         console.log("reviewData", data)
         dispatch(createReview(data))
         setNewReview({ review: '', rating: 0 })
@@ -155,22 +155,20 @@ export default function ProductDetails() {
                                     <div className='flex items-center space-x-3'>
                                         <Rating
                                             name="read-only"
-                                            value={products.product?.ratings?.reduce((sum, rating) => sum + rating.rating, 0) / (products.product?.ratings?.length || 1)}
+                                            value={reviews?.reviews?.reduce((sum, review) => sum + review.rating, 0) / (reviews?.reviews?.length || 1) || 0}
                                             readOnly
                                         />
                                         <p className='font-medium text-gray-900 hover:text-purple-600'>
-                                            {products.product?.numRatings || 0} Ratings
+                                            {reviews?.reviews?.length || 0} Ratings
                                         </p>
                                         <p className='font-medium text-gray-900 hover:text-purple-600'>|</p>
                                         <p className='font-medium text-purple-600'>
-                                            {products.product?.reviews?.length || 0} Reviews
+                                            {reviews?.reviews?.length || 0} Reviews
                                         </p>
                                     </div>
                                 </div>
 
                                 <form className="mt-10">
-
-                                    {/* Sizes */}
                                     <div className="mt-10">
                                         <div className="flex items-center justify-between">
                                             <h3 className="text-sm font-medium text-gray-900">Size</h3>
