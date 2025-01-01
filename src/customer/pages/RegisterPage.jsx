@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, TextField, Button, Typography, Card, CardContent, Box } from '@mui/material';
-import { getUser, register } from '../../State/Auth/Action';
+import { Grid, TextField, Button, Typography, Card, CardContent, Box, Alert, CircularProgress } from '@mui/material';
+import { getUser, register, login } from '../../State/Auth/Action';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -10,13 +10,24 @@ const RegisterPage = () => {
     const jwt = localStorage.getItem("jwt");
     const { auth } = useSelector(store => store);
 
+    const [registrationStatus, setRegistrationStatus] = useState(null); // Track registration status
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false); // Track loading status
+
+    const validDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com'];
+
     useEffect(() => {
         if (jwt) {
             dispatch(getUser(jwt));
         }
     }, [jwt, auth.jwt, dispatch]);
 
-    const handleSubmit = (event) => {
+    const validateEmail = (email) => {
+        const domain = email.split('@')[1];
+        return domain && validDomains.includes(domain);
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         const data = new FormData(event.currentTarget);
@@ -27,8 +38,27 @@ const RegisterPage = () => {
             email: data.get("email"),
             password: data.get("password"),
         };
+
+        if (!validateEmail(userData.email)) {
+            setError("Please use a popular email domain (e.g., gmail.com, yahoo.com).");
+            return;
+        }
+
+        setError(null); // Clear errors if any
+        setLoading(true); // Show loading spinner
         dispatch(register(userData));
-        console.log(userData);
+
+        // Simulate API response success
+        setTimeout(() => {
+            setRegistrationStatus(true);
+            dispatch(login({ email: userData.email, password: userData.password }));
+
+            // Simulate login and delay for homepage rendering
+            setTimeout(() => {
+                setLoading(false);
+                navigate("/");
+            }, 2000);
+        }, 1000);
     };
 
     return (
@@ -42,72 +72,102 @@ const RegisterPage = () => {
                 padding: 2
             }}
         >
-            <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 3 }}>
+            <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 4, borderRadius: 2 }}>
                 <CardContent>
-                    <Typography variant="h5" component="h1" textAlign="center" mb={2}>
-                        Create an Account
+                    <Typography variant="h4" component="h1" textAlign="center" mb={3} color="primary">
+                        Create Your Account
                     </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    id='firstName'
-                                    name='firstName'
-                                    label="First Name"
-                                    fullWidth
-                                    autoComplete='given-name'
-                                />
+                    {error && (
+                        <Alert severity="error" sx={{ mb: 2 }}>
+                            {error}
+                        </Alert>
+                    )}
+                    {registrationStatus && (
+                        <Alert severity="success" sx={{ mb: 2 }}>
+                            Registration successful! Logging in...
+                        </Alert>
+                    )}
+                    {loading ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                mt: 4
+                            }}
+                        >
+                            <CircularProgress color="primary" />
+                            <Typography variant="body1" sx={{ mt: 2 }}>
+                                One moment, please...
+                            </Typography>
+                        </Box>
+                    ) : (
+                        <form onSubmit={handleSubmit}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        id="firstName"
+                                        name="firstName"
+                                        label="First Name"
+                                        placeholder="Enter your first name"
+                                        fullWidth
+                                        autoComplete="given-name"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        id="lastName"
+                                        name="lastName"
+                                        label="Last Name"
+                                        placeholder="Enter your last name"
+                                        fullWidth
+                                        autoComplete="family-name"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        id="email"
+                                        name="email"
+                                        label="E-mail"
+                                        type="email"
+                                        placeholder="e.g., user@gmail.com"
+                                        fullWidth
+                                        autoComplete="email"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        id="password"
+                                        name="password"
+                                        label="Password"
+                                        type="password"
+                                        placeholder="Enter a strong password"
+                                        fullWidth
+                                        autoComplete="new-password"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        size="large"
+                                        fullWidth
+                                        sx={{
+                                            padding: "0.8rem",
+                                            bgcolor: "#9155FD",
+                                            ':hover': { bgcolor: '#7E47E9' }
+                                        }}
+                                    >
+                                        Register
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    id='lastName'
-                                    name='lastName'
-                                    label="Last Name"
-                                    fullWidth
-                                    autoComplete='family-name'
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    id='email'
-                                    name='email'
-                                    label="E-mail"
-                                    type="email"
-                                    fullWidth
-                                    autoComplete='email'
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    id='password'
-                                    name='password'
-                                    label="Password"
-                                    type="password"
-                                    fullWidth
-                                    autoComplete='new-password'
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button
-                                    type='submit'
-                                    variant='contained'
-                                    size='large'
-                                    fullWidth
-                                    sx={{
-                                        padding: "0.8rem",
-                                        bgcolor: "#9155FD",
-                                        ':hover': { bgcolor: '#7E47E9' }
-                                    }}
-                                >
-                                    Register
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
+                        </form>
+                    )}
                     <Box textAlign="center" mt={3}>
                         <Typography variant="body2">
                             Already have an account?

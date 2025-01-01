@@ -1,14 +1,20 @@
-import React from 'react';
-import { Grid, TextField, Button, Typography, Card, CardContent, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Grid, TextField, Button, Typography, Card, CardContent, Box, Alert, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../State/Auth/Action';
 
 const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleSubmit = (event) => {
+    // Access auth state from Redux
+    const { auth } = useSelector(state => state);
+
+    const [loginStatus, setLoginStatus] = useState(null);
+    const [isLoading, setIsLoading] = useState(false); // Track loading state
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         const data = new FormData(event.currentTarget);
@@ -17,10 +23,23 @@ const LoginPage = () => {
             email: data.get("email"),
             password: data.get("password"),
         };
+
         dispatch(login(userData));
-        console.log(userData);
-        navigate("/")
     };
+
+    useEffect(() => {
+        console.log("user:", auth?.jwt);
+        if (auth?.jwt?.message === "login success") {
+            setLoginStatus({ success: true, message: 'Login successful!' });
+            setIsLoading(true); // Start loading
+            setTimeout(() => {
+                setIsLoading(false); // Stop loading
+                navigate("/");
+            }, 1000); // Simulate loading delay
+        } else if (auth?.error) {
+            setLoginStatus({ success: false, message: 'Login Failed!' });
+        }
+    }, [auth, navigate]);
 
     return (
         <Box
@@ -38,58 +57,72 @@ const LoginPage = () => {
                     <Typography variant="h5" component="h1" textAlign="center" mb={2}>
                         Welcome Back
                     </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    id="email"
-                                    name="email"
-                                    label="E-mail"
-                                    type="email"
-                                    fullWidth
-                                    autoComplete="email"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    id="password"
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    fullWidth
-                                    autoComplete="current-password"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    size="large"
-                                    fullWidth
-                                    sx={{
-                                        padding: "0.8rem",
-                                        bgcolor: "#9155FD",
-                                        ':hover': { bgcolor: '#7E47E9' }
-                                    }}
-                                >
-                                    Log In
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
-                    <Box textAlign="center" mt={3}>
-                        <Typography variant="body2">
-                            Don’t have an account?
-                            <Button
-                                onClick={() => navigate("/register")}
-                                sx={{ color: '#9155FD', textTransform: 'none', ml: 1 }}
-                            >
-                                Register
-                            </Button>
-                        </Typography>
-                    </Box>
+                    {isLoading ? (
+                        <Box textAlign="center" mt={2}>
+                            <CircularProgress sx={{ mb: 2 }} />
+                            <Typography variant="body1">One moment please...</Typography>
+                        </Box>
+                    ) : (
+                        <>
+                            {loginStatus && (
+                                <Alert severity={loginStatus.success ? 'success' : 'error'} sx={{ mb: 2 }}>
+                                    {loginStatus.message}
+                                </Alert>
+                            )}
+                            <form onSubmit={handleSubmit}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            id="email"
+                                            name="email"
+                                            label="E-mail"
+                                            type="email"
+                                            fullWidth
+                                            autoComplete="email"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            id="password"
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            fullWidth
+                                            autoComplete="current-password"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            size="large"
+                                            fullWidth
+                                            sx={{
+                                                padding: "0.8rem",
+                                                bgcolor: "#9155FD",
+                                                ':hover': { bgcolor: '#7E47E9' }
+                                            }}
+                                        >
+                                            Log In
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </form>
+                            <Box textAlign="center" mt={3}>
+                                <Typography variant="body2">
+                                    Don’t have an account?
+                                    <Button
+                                        onClick={() => navigate("/register")}
+                                        sx={{ color: '#9155FD', textTransform: 'none', ml: 1 }}
+                                    >
+                                        Register
+                                    </Button>
+                                </Typography>
+                            </Box>
+                        </>
+                    )}
                 </CardContent>
             </Card>
         </Box>
