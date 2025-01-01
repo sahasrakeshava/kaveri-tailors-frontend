@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Grid, TextField, Button, Typography, Card, CardContent, Box, Alert, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,8 +27,9 @@ const LoginPage = () => {
         dispatch(login(userData));
     };
 
-    useEffect(() => {
-        console.log("user:", auth?.jwt);
+    const message = () => {
+        console.log("user:", auth);
+
         if (auth?.jwt?.message === "login success") {
             setLoginStatus({ success: true, message: 'Login successful!' });
             setIsLoading(true); // Start loading
@@ -36,10 +37,10 @@ const LoginPage = () => {
                 setIsLoading(false); // Stop loading
                 navigate("/");
             }, 1000); // Simulate loading delay
-        } else if (auth?.error) {
+        } else {
             setLoginStatus({ success: false, message: 'Login Failed!' });
         }
-    }, [auth, navigate]);
+    };
 
     return (
         <Box
@@ -98,6 +99,7 @@ const LoginPage = () => {
                                             type="submit"
                                             variant="contained"
                                             size="large"
+                                            onCanPlay={message}
                                             fullWidth
                                             sx={{
                                                 padding: "0.8rem",
