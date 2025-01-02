@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, TextField, Button, Typography, Card, CardContent, Box, Alert, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,10 +9,11 @@ const LoginPage = () => {
     const dispatch = useDispatch();
 
     // Access auth state from Redux
-    const { auth } = useSelector(state => state);
+    const { auth } = useSelector((state) => state);
 
     const [loginStatus, setLoginStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false); // Track loading state
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Track form submission
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -24,23 +25,28 @@ const LoginPage = () => {
             password: data.get("password"),
         };
 
+        setIsFormSubmitted(true); // Indicate form submission
         dispatch(login(userData));
     };
 
-    const message = () => {
-        console.log("user:", auth);
-
-        if (auth?.jwt?.message === "login success") {
-            setLoginStatus({ success: true, message: 'Login successful!' });
-            setIsLoading(true); // Start loading
-            setTimeout(() => {
-                setIsLoading(false); // Stop loading
-                navigate("/");
-            }, 1000); // Simulate loading delay
-        } else {
-            setLoginStatus({ success: false, message: 'Login Failed!' });
+    useEffect(() => {
+        if (isFormSubmitted) {
+            if (auth?.jwt?.message === "login success") {
+                setLoginStatus({ success: true, message: 'Login successful!' });
+                setIsLoading(true);
+                setTimeout(() => {
+                    setIsLoading(false); // Stop loading
+                    setIsFormSubmitted(false); // Reset form submission state
+                    navigate("/");
+                }, 1000); // Simulate loading delay
+            } else if (auth?.jwt === null || auth?.jwt?.message !== "login success") {
+                setTimeout(() => {
+                    setLoginStatus({ success: false, message: 'Invalid email or password. Please try again.' });
+                    setIsLoading(false); // Stop loading
+                }, 2000);
+            }
         }
-    };
+    }, [auth, navigate]);
 
     return (
         <Box
@@ -50,7 +56,7 @@ const LoginPage = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 background: 'linear-gradient(135deg, #6A11CB, #2575FC)',
-                padding: 2
+                padding: 2,
             }}
         >
             <Card sx={{ maxWidth: 400, width: '100%', boxShadow: 3 }}>
@@ -99,12 +105,11 @@ const LoginPage = () => {
                                             type="submit"
                                             variant="contained"
                                             size="large"
-                                            onCanPlay={message}
                                             fullWidth
                                             sx={{
                                                 padding: "0.8rem",
                                                 bgcolor: "#9155FD",
-                                                ':hover': { bgcolor: '#7E47E9' }
+                                                ':hover': { bgcolor: '#7E47E9' },
                                             }}
                                         >
                                             Log In
