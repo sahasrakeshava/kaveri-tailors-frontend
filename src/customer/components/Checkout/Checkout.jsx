@@ -27,7 +27,7 @@ export default function Checkout() {
     };
 
     return (
-        <div className='bg-white mt-2 ml-2 mr-2 mb-2 px-10 py-5 rounded-lg border border-purple-500 '>
+        <div className='px-10 py-5 mt-2 mb-2 ml-2 mr-2 bg-white border border-purple-500 rounded-lg '>
             <Box sx={{ width: '100%', }}>
                 <Stepper activeStep={step}>
                     {steps.map((label, index) => {
@@ -43,7 +43,7 @@ export default function Checkout() {
                 {activeStep === steps.length ? (
                     <React.Fragment>
                         <Typography sx={{ mt: 2, mb: 1 }}>
-                            All steps completed - you&apos;re finished
+                            All steps completed
                         </Typography>
                     </React.Fragment>
                 ) : (

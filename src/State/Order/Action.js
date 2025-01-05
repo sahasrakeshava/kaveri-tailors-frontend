@@ -2,6 +2,9 @@ import {
   CREATE_ORDER_FAILURE,
   CREATE_ORDER_REQUEST,
   CREATE_ORDER_SUCCESS,
+  GET_ALL_ORDER_FAILURE,
+  GET_ALL_ORDER_REQUEST,
+  GET_ALL_ORDER_SUCCESS,
   GET_ORDER_BY_ID_FAILURE,
   GET_ORDER_BY_ID_REQUEST,
   GET_ORDER_BY_ID_SUCCESS,
@@ -41,6 +44,21 @@ export const getOrderById = (orderId) => async (dispatch) => {
     console.log("catch error :", error);
     dispatch({
       type: GET_ORDER_BY_ID_FAILURE,
+      payload: error.message,
+    });
+  }
+};
+
+export const getAllOrders = (user) => async (dispatch) => {
+  dispatch({ type: GET_ALL_ORDER_REQUEST });
+  try {
+    const { data } = await api.get(`/api/orders/user/${user}`);
+    console.log("orders:", data);
+    dispatch({ type: GET_ALL_ORDER_SUCCESS, payload: data });
+  } catch (error) {
+    console.log("catch error :", error);
+    dispatch({
+      type: GET_ALL_ORDER_FAILURE,
       payload: error.message,
     });
   }

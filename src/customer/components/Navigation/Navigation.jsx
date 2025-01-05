@@ -80,6 +80,7 @@ export default function Navigation() {
         classes={{ paper: "w-64" }}
       >
         <div className="p-4">
+          {/* Drawer Header */}
           <div className="flex items-center justify-between mb-4">
             <span className="text-lg font-bold">Menu</span>
             <button
@@ -91,16 +92,16 @@ export default function Navigation() {
               <XMarkIcon aria-hidden="true" className="w-6 h-6" />
             </button>
           </div>
-          <div className="flex ml-4 lg:ml-0">
+
+          {/* Logo */}
+          <div className="flex mb-4 ml-4 lg:ml-0">
             <a href="/">
               <span className="sr-only">Your Company</span>
-              <img
-                alt=""
-                src={logo}
-                className="w-auto h-8"
-              />
+              <img alt="" src={logo} className="w-auto h-8" />
             </a>
           </div>
+
+          {/* Navigation Categories */}
           <div className="mt-4 space-y-4">
             {navigation.categories.map((category) => (
               <div key={category.name}>
@@ -145,8 +146,67 @@ export default function Navigation() {
               </div>
             ))}
           </div>
+
+          {/* User Account Options */}
+          <div className="pt-4 mt-6 border-t border-gray-200">
+            {auth.user?.firstName ? (
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                      Account
+                      <ChevronDownIcon
+                        className={`w-5 h-5 transform ${open ? "rotate-180" : ""}`}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="pl-4 mt-2 space-y-2">
+                      <Button
+                        className="w-full text-left"
+                        onClick={() => {
+                          navigate("/profile");
+                          setOpen(false);
+                        }}
+                      >
+                        Profile
+                      </Button>
+                      <Button
+                        className="w-full text-left"
+                        onClick={() => {
+                          navigate("/account/order");
+                          setOpen(false);
+                        }}
+                      >
+                        My Orders
+                      </Button>
+                      <Button
+                        className="w-full text-left"
+                        onClick={() => {
+                          handleLogout();
+                          setOpen(false);
+                        }}
+                      >
+                        Logout
+                      </Button>
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+            ) : (
+              <Button
+                className="w-full text-left"
+                onClick={() => {
+                  navigate("/login");
+                  setOpen(false);
+                }}
+              >
+                Sign In
+              </Button>
+            )}
+          </div>
+
         </div>
       </Drawer>
+
 
       <header className="relative bg-white">
         <nav aria-label="Top" className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
