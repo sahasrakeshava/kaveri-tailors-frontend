@@ -43,7 +43,7 @@ const LoginPage = () => {
                 setTimeout(() => {
                     setLoginStatus({ success: false, message: 'Invalid email or password. Please try again.' });
                     setIsLoading(false); // Stop loading
-                }, 2000);
+                }, 3000);
             }
         }
     }, [auth, navigate]);
