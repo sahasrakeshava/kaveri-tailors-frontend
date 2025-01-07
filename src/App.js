@@ -7,7 +7,7 @@ import LoginPage from "./customer/pages/LoginPage";
 import RegisterPage from "./customer/pages/RegisterPage";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import CircularWithValueLabel from "./MainLoading.jsx"
 function App() {
   const { auth } = useSelector((store) => store);
   const dispatch = useDispatch();
