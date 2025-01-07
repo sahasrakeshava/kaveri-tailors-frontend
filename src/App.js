@@ -34,7 +34,7 @@ function App() {
 
   if (loading) {
     // Display a loading spinner or placeholder while the backend is being pinged
-    return <div className="loading">Loading...</div>;
+    return <CircularWithValueLabel/>;
   }
 
   return (
