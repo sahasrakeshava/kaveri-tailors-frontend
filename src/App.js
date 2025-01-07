@@ -33,9 +33,14 @@ function App() {
   }, []);
 
   if (loading) {
-    // Display a loading spinner or placeholder while the backend is being pinged
-    return <CircularWithValueLabel/>;
-  }
+  // Display a loading spinner or placeholder while the backend is being pinged
+  return (
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <CircularWithValueLabel />
+    </div>
+  );
+}
+
 
   return (
     <div className="App">
