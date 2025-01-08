@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "https://kaveri-tailors-backend-production.up.railway.app";
+export const API_BASE_URL = "https://kaveri-tailors-backend.onrender.com";
 const jwt = localStorage.getItem("jwt");
 
 export const api = axios.create({
