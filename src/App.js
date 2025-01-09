@@ -38,7 +38,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://kaveri-tailors-backend.onrender.com"
+          "kaveri-tailors-backend.up.railway.app"
         ); // Adjust the URL to your backend endpoint
         // You can dispatch actions here if needed
         console.log("Backend responded:", response.data);
