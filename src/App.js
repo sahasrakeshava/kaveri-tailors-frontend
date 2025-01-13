@@ -34,12 +34,24 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Ping the backend when the app loads
+    // Check URL for user data and token
+    const queryParams = new URLSearchParams(window.location.search);
+    const user = queryParams.get("user");
+    const token = queryParams.get("token");
+
+    if (user && token) {
+      // Step 1: Decode the user data and token from the URL parameters
+      const decodedUser = JSON.parse(decodeURIComponent(user));
+
+      // Step 2: Store the decoded user data and token in localStorage
+      localStorage.setItem("user", JSON.stringify(decodedUser));
+      localStorage.setItem("jwt", token);
+    }
+
+    // Step 3: Ping the backend to check server status (optional)
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://kaveri-tailors-backend.up.railway.app"
-        ); // Adjust the URL to your backend endpoint
+        const response = await axios.get("http://localhost:3001");
         // You can dispatch actions here if needed
         console.log("Backend responded:", response.data);
       } catch (error) {
@@ -50,7 +62,7 @@ function App() {
     };
 
     fetchData();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
 
   if (loading) {
     // Display a loading spinner or placeholder while the backend is being pinged

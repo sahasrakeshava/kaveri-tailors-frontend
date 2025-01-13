@@ -17,17 +17,9 @@ export default function Checkout() {
     const location = useLocation();
     const querySearch = new URLSearchParams(location.search)
     const step = querySearch.get("step")
-    const handleNext = () => {
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
 
     return (
-        <div className='px-10 py-5 mt-2 mb-2 ml-2 mr-2 bg-white border border-purple-500 rounded-lg '>
+        <div className='px-10 py-5 mt-2 mb-4 ml-2 mr-2 bg-white border border-purple-500 rounded-lg '>
             <Box sx={{ width: '100%', }}>
                 <Stepper activeStep={step}>
                     {steps.map((label, index) => {
@@ -48,19 +40,7 @@ export default function Checkout() {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-
-                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                            <Button
-                                color="inherit"
-                                disabled={activeStep === 0}
-                                onClick={handleBack}
-                                sx={{ mr: 1 }}
-                            >
-                                Back
-                            </Button>
-                            <Box sx={{ flex: '1 1 auto' }} />
-                        </Box>
-                        <div>
+                        <div className='mt-10'>
                             {step == 2 ? <DeliveryAddressForm /> : <OrderSummary />}
                         </div>
                     </React.Fragment>

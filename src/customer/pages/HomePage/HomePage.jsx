@@ -21,11 +21,11 @@ const HomePage = () => {
           data={
             Array.isArray(products.products?.content)
               ? products.products.content.reduce((acc, item) =>
-                (String(item?.category?.name) === "mens_kurta" && acc.push(item), acc), []
+                (String(item?.category?.name) === "sweater" && acc.push(item), acc), []
               )
               : []
           }
-          sectionName={"Mens Kurta"}
+          sectionName={"Sweater"}
         />
 
       </div>

@@ -15,8 +15,9 @@ import { navigation } from '../../../Data/navigation.js'
 import logo from './logo.png'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser, logout } from '../../../State/Auth/Action';
+import { getUser, googleLogout, logout } from '../../../State/Auth/Action';
 import SearchModal from './search';
+import { getCart } from '../../../State/Cart/Action.js';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -29,10 +30,9 @@ export default function Navigation() {
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
-  const jwt = localStorage.getItem("jwt")
   const { auth } = useSelector(store => store)
   const dispatch = useDispatch()
-
+  const { cart } = useSelector(store => store.cart)
 
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget); // Correct the spelling here
@@ -47,14 +47,28 @@ export default function Navigation() {
     close()
   };
   const handleLogout = () => {
-    dispatch(logout())
+    if (!auth?.user.googleId) {
+      dispatch(logout())
+    }
+    else {
+      dispatch(googleLogout())
+    }
     handleCloseUserMenu()
   }
+
   useEffect(() => {
+    const jwt = localStorage.getItem("jwt")
     if (jwt) {
       dispatch(getUser(jwt))
     }
-  }, [jwt, auth.jwt])
+
+  }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(getCart());
+    }, 1000);
+  }, [])
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -385,7 +399,7 @@ export default function Navigation() {
                       aria-hidden="true"
                       className="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cart?.cartItems?.length}</span>
                     <span className="sr-only">items in cart, view bag</span>
                   </Button>
                 </div>

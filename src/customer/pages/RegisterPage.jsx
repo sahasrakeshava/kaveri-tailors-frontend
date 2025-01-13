@@ -1,20 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Grid, TextField, Button, Typography, Card, CardContent, Box, Alert, CircularProgress } from '@mui/material';
-import { getUser, register, login } from '../../State/Auth/Action';
+import React, { useEffect, useState } from "react";
+import {
+    useNavigate,
+} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    Grid,
+    TextField,
+    Button,
+    Typography,
+    Card,
+    CardContent,
+    Box,
+    Alert,
+    CircularProgress,
+} from "@mui/material";
+import { getUser, register, login, googleLogin } from "../../State/Auth/Action";
+
 
 const RegisterPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const { auth } = useSelector(store => store);
+    const { auth } = useSelector((store) => store);
 
-    const [registrationStatus, setRegistrationStatus] = useState(null); // Track registration status
+    const [registrationStatus, setRegistrationStatus] = useState(null);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false); // Track loading status
+    const [loading, setLoading] = useState(false);
 
-    const validDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com'];
+    const validDomains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com"];
 
     useEffect(() => {
         if (jwt) {
@@ -23,7 +36,7 @@ const RegisterPage = () => {
     }, [jwt, auth.jwt, dispatch]);
 
     const validateEmail = (email) => {
-        const domain = email.split('@')[1];
+        const domain = email.split("@")[1];
         return domain && validDomains.includes(domain);
     };
 
@@ -44,8 +57,8 @@ const RegisterPage = () => {
             return;
         }
 
-        setError(null); // Clear errors if any
-        setLoading(true); // Show loading spinner
+        setError(null);
+        setLoading(true);
         dispatch(register(userData));
 
         // Simulate API response success
@@ -61,18 +74,23 @@ const RegisterPage = () => {
         }, 1000);
     };
 
+    const handleGoogleRegister = () => {
+        // Dispatch Google registration action (to be implemented in Redux)
+        dispatch(googleLogin());
+    };
+
     return (
         <Box
             sx={{
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                background: 'linear-gradient(135deg, #6A11CB, #2575FC)',
-                padding: 2
+                minHeight: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "linear-gradient(135deg, #6A11CB, #2575FC)",
+                padding: 2,
             }}
         >
-            <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 4, borderRadius: 2 }}>
+            <Card sx={{ maxWidth: 500, width: "100%", boxShadow: 4, borderRadius: 2 }}>
                 <CardContent>
                     <Typography variant="h4" component="h1" textAlign="center" mb={3} color="primary">
                         Create Your Account
@@ -90,10 +108,10 @@ const RegisterPage = () => {
                     {loading ? (
                         <Box
                             sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                mt: 4
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                mt: 4,
                             }}
                         >
                             <CircularProgress color="primary" />
@@ -102,83 +120,122 @@ const RegisterPage = () => {
                             </Typography>
                         </Box>
                     ) : (
-                        <form onSubmit={handleSubmit}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        required
-                                        id="firstName"
-                                        name="firstName"
-                                        label="First Name"
-                                        placeholder="Enter your first name"
-                                        fullWidth
-                                        autoComplete="given-name"
-                                    />
+                        <>
+                            <form onSubmit={handleSubmit}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            required
+                                            id="firstName"
+                                            name="firstName"
+                                            label="First Name"
+                                            placeholder="Enter your first name"
+                                            fullWidth
+                                            autoComplete="given-name"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            required
+                                            id="lastName"
+                                            name="lastName"
+                                            label="Last Name"
+                                            placeholder="Enter your last name"
+                                            fullWidth
+                                            autoComplete="family-name"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            id="email"
+                                            name="email"
+                                            label="E-mail"
+                                            type="email"
+                                            placeholder="e.g., user@gmail.com"
+                                            fullWidth
+                                            autoComplete="email"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            id="password"
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            placeholder="Enter a strong password"
+                                            fullWidth
+                                            autoComplete="new-password"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            size="large"
+                                            fullWidth
+                                            sx={{
+                                                padding: "0.8rem",
+                                                bgcolor: "#9155FD",
+                                                ":hover": { bgcolor: "#7E47E9" },
+                                            }}
+                                        >
+                                            Register
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        required
-                                        id="lastName"
-                                        name="lastName"
-                                        label="Last Name"
-                                        placeholder="Enter your last name"
-                                        fullWidth
-                                        autoComplete="family-name"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        id="email"
-                                        name="email"
-                                        label="E-mail"
-                                        type="email"
-                                        placeholder="e.g., user@gmail.com"
-                                        fullWidth
-                                        autoComplete="email"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        id="password"
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        placeholder="Enter a strong password"
-                                        fullWidth
-                                        autoComplete="new-password"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
+                            </form>
+                            <Grid container spacing={2} sx={{ mt: 2 }}>
+                                <Grid item xs={12} textAlign="center">
+                                    <Typography variant="body2" sx={{ color: "gray", mb: 1 }}>
+                                        OR
+                                    </Typography>
                                     <Button
-                                        type="submit"
-                                        variant="contained"
+                                        variant="outlined"
                                         size="large"
                                         fullWidth
+                                        startIcon={
+                                            <img
+                                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/150px-Google_%22G%22_logo.svg.png"
+                                                alt="Google Icon"
+                                                style={{ width: "20px", height: "20px" }}
+                                            />
+                                        }
                                         sx={{
                                             padding: "0.8rem",
-                                            bgcolor: "#9155FD",
-                                            ':hover': { bgcolor: '#7E47E9' }
+                                            borderColor: "#4285F4",
+                                            color: "#4285F4",
+                                            textTransform: "none", // Matches Google's non-uppercase text style
+                                            fontWeight: "bold",   // Adds emphasis
+                                            ":hover": {
+                                                borderColor: "#3367D6",
+                                                color: "#3367D6",
+                                            },
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            gap: "0.5rem", // Adds spacing between the icon and text
                                         }}
+                                        onClick={handleGoogleRegister}
                                     >
-                                        Register
+                                        Sign up with Google
                                     </Button>
                                 </Grid>
                             </Grid>
-                        </form>
+                            <Box textAlign="center" mt={3}>
+                                <Typography variant="body2">
+                                    Already have an account?
+                                    <Button
+                                        onClick={() => navigate("/login")}
+                                        sx={{ color: "#9155FD", textTransform: "none", ml: 1 }}
+                                    >
+                                        Log In
+                                    </Button>
+                                </Typography>
+                            </Box>
+                        </>
                     )}
-                    <Box textAlign="center" mt={3}>
-                        <Typography variant="body2">
-                            Already have an account?
-                            <Button
-                                onClick={() => navigate("/login")}
-                                sx={{ color: '#9155FD', textTransform: 'none', ml: 1 }}
-                            >
-                                Log In
-                            </Button>
-                        </Typography>
-                    </Box>
                 </CardContent>
             </Card>
         </Box>
