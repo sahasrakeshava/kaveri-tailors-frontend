@@ -51,7 +51,7 @@ function App() {
     // Step 3: Ping the backend to check server status (optional)
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3001");
+        const response = await axios.get("https://api-kt-bcf1.onrender.com");
         // You can dispatch actions here if needed
         console.log("Backend responded:", response.data);
       } catch (error) {

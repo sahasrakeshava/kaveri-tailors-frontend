@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "http://localhost:3001";
+export const API_BASE_URL = "http://api-kt-bcf1.onrender.com";
 const jwt = localStorage.getItem("jwt");
 
 export const api = axios.create({
