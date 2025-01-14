@@ -16,8 +16,8 @@ const HomeSectionCard = ({ product }) => {
         <p className="mt-2 text-sm text-gray-900">
           {product.title}
         </p>
-        <p className="mt-2 text-xs text-gray-700">{product.discountedPrice}</p>
-        <p className="mt-2 text-xs text-gray-500 line-through">{product.price}</p>
+        <p className="mt-2 text-xs text-green-600">₹{product.discountedPrice}</p>
+        <p className="mt-2 text-xs text-gray-500 line-through">₹{product.price}</p>
       </div>
     </div>
   );
