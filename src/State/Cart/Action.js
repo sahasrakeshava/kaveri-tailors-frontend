@@ -18,10 +18,11 @@ import {
   UPDATE_CART_ITEM_SUCCESS,
 } from "./ActionType";
 
-export const getCart = () => async (dispatch) => {
+export const getCart = (userId) => async (dispatch) => {
   dispatch({ type: GET_CART_REQUEST });
   try {
-    const { data } = await api.get(`/api/cart/`);
+    console.log("reqData:", userId);
+    const { data } = await api.get(`/api/cart/${userId}`);
     dispatch({ type: GET_CART_SUCCESS, payload: data });
     console.log("cart data:", data);
   } catch (error) {

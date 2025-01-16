@@ -13,16 +13,10 @@ import {
     MenuItem,
     MenuItems,
 } from '@headlessui/react';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid';
 import ProductCard from './ProductCard';
-import { filters, singleFilter, sortOptions } from './FilterData';
+import { filters, sortOptions } from './FilterData';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux"
 import { findProducts } from '../../../State/Product/Action';
@@ -38,7 +32,6 @@ function classNames(...classes) {
 export default function Product() {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState({}); // State for selected radio options
-    const [showErrorPage, setShowErrorPage] = useState(false); // Track error page state
     const location = useLocation();
     const navigate = useNavigate();
     const { products } = useSelector(store => store)
@@ -108,13 +101,6 @@ export default function Product() {
         if (filterValue.length > 0) {
             searchParams.set(sectionId, filterValue.join(","));
         }
-        const query = searchParams.toString();
-        navigate({ search: `?${query}` })
-    }
-    const handleRadioFilterChange = (e, sectionId) => {
-        const searchParams = new URLSearchParams(location.search)
-
-        searchParams.set(sectionId, e.target.value)
         const query = searchParams.toString();
         navigate({ search: `?${query}` })
     }
@@ -226,19 +212,6 @@ export default function Product() {
                                     </div>
                                 </MenuItems>
                             </Menu>
-
-                            <button type="button" className="p-2 ml-5 -m-2 text-gray-400 hover:text-gray-500 sm:ml-7">
-                                <span className="sr-only">View grid</span>
-                                <Squares2X2Icon aria-hidden="true" className="w-5 h-5" />
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setMobileFiltersOpen(true)}
-                                className="p-2 ml-4 -m-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
-                            >
-                                <span className="sr-only">Filters</span>
-                                <FunnelIcon aria-hidden="true" className="w-5 h-5" />
-                            </button>
                         </div>
                     </div>
 
@@ -251,7 +224,14 @@ export default function Product() {
                             <div>
                                 <div className='flex items-center justify-between'>
                                     <h1 className='text-lg font-bold text-black opacity-50'>Filters</h1>
-                                    <FilterListIcon />
+                                    <button
+                                        type="button"
+                                        onClick={() => setMobileFiltersOpen(true)}
+                                        className="p-2 ml-4 -m-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+                                    >
+                                        <span className="sr-only">Filters</span>
+                                        <FunnelIcon aria-hidden="true" className="w-5 h-5" />
+                                    </button>
                                 </div>
                                 <form className="hidden lg:block">
 
@@ -288,49 +268,12 @@ export default function Product() {
                                             </DisclosurePanel>
                                         </Disclosure>
                                     ))}
-                                    {singleFilter.map((section) => (
-                                        <Disclosure key={section.id} as="div" className="py-6 border-b border-gray-200">
-                                            <>
-                                                <h3 className="flow-root -my-3">
-                                                    <DisclosureButton className="flex items-center justify-between w-full py-3 text-sm text-gray-400 bg-white group hover:text-gray-500">
-                                                        <FormLabel className="text-black" sx={{ color: "black" }} id="demo-radio-buttons-group-label">{section.name}</FormLabel>
-                                                        <span className="flex items-center ml-6">
-                                                            <PlusIcon aria-hidden="true" className="h-5 w-5 group-data-[open]:hidden" />
-                                                            <MinusIcon aria-hidden="true" className="h-5 w-5 [.group:not([data-open])_&]:hidden" />
-                                                        </span>
-                                                    </DisclosureButton>
-                                                </h3>
-                                                <DisclosurePanel className="pt-6">
-                                                    <FormControl>
-                                                        <div className="space-y-4">
-                                                            <RadioGroup
-                                                                aria-labelledby="demo-radio-buttons-group-label"
-                                                                value={selectedOptions[section.id] || ""}
-                                                                onChange={(e) => handleOptionChange(section.id, e.target.value)}
-                                                                name="radio-buttons-group"
-                                                            >
-                                                                {section.options.map((option, optionIdx) => (
-                                                                    <FormControlLabel
-                                                                        onChange={(e) => handleRadioFilterChange(e, section.id)}
-                                                                        key={option.value}
-                                                                        value={option.value}
-                                                                        control={<Radio />}
-                                                                        label={option.label}
-                                                                    />
-                                                                ))}
-                                                            </RadioGroup>
-                                                        </div>
-                                                    </FormControl>
-                                                </DisclosurePanel>
-                                            </>
-                                        </Disclosure>
-                                    ))}
                                 </form>
                             </div>
                             {/* Product grid */}
                             <div className="w-full lg:col-span-4">
                                 <div className="flex flex-wrap justify-center py-5 bg-white">
-                                    {products.loading ? (
+                                    {products.isLoading ? (
                                         <LoadingBar /> // Show loader while fetching products
                                     ) : products.products?.content?.length === 0 ? (
                                         <ErrorPage category={param.levelThree} /> // Show error page if no products found

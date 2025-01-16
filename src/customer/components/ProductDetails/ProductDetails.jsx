@@ -82,7 +82,7 @@ export default function ProductDetails() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = { productId: params.productId, review: newReview.review, rating: newReview.rating, user: auth.user?._id || "675854deca75b7b748d39d12" }
+        const data = { productId: params.productId, review: newReview.review, rating: newReview.rating, user: auth.user?._id }
         console.log("reviewData", data)
         dispatch(createReview(data))
         setNewReview({ review: '', rating: 0 })

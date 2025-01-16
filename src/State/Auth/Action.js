@@ -104,7 +104,7 @@ export const googleLogout = () => async (dispatch) => {
 export const getUserById = (userId) => async (dispatch) => {
   dispatch(getUserRequest());
   try {
-    const response = await api.get(`${API_BASE_URL}/api/users/${userId}`);
+    const response = await api.get(`/api/users/${userId}`);
     const user = response.data;
     console.log("user", user);
     dispatch(getUserSuccess(user));

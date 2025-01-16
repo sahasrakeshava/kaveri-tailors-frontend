@@ -20,7 +20,9 @@ const Cart = () => {
     }
 
     useEffect(() => {
-        dispatch(getCart())
+        const userId = auth?.user?._id
+        console.log("userId:", userId)
+        dispatch(getCart(userId))
     }, [cart.updateCartItem, cart.deleteCartItem])
 
     return (

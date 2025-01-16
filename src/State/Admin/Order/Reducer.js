@@ -1,4 +1,4 @@
-const {
+import {
   GET_ORDERS_REQUEST,
   GET_ORDERS_SUCCESS,
   GET_ORDERS_FAILURE,
@@ -20,7 +20,7 @@ const {
   SHIP_ORDER_REQUEST,
   SHIP_ORDER_SUCCESS,
   SHIP_ORDER_FAILURE,
-} = require("./ActionType");
+} from "./ActionType";
 
 const initialState = {
   loading: false,

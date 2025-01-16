@@ -66,9 +66,10 @@ export default function Navigation() {
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(getCart());
+      const uId = auth?.user?._id;
+      dispatch(getCart(uId));
     }, 1000);
-  }, [])
+  }, [auth?.user])
 
   useEffect(() => {
     const handleOutsideClick = (event) => {

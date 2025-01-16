@@ -22,11 +22,7 @@ const ErrorPage = ({ category }) => {
                 No Products Found
             </Typography>
             <Typography variant="body1" sx={{ mb: 3 }}>
-                We couldn't find any products under the category{' '}
-                <Typography component="span" variant="body1" fontWeight="bold">
-                    {category}
-                </Typography>
-                .
+                We couldn't find any products under the Selected Category.
             </Typography>
             <Button
                 variant="contained"

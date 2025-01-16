@@ -29,6 +29,17 @@ const DeliveryAddressForm = () => {
 
         if (!selectedAddress) {
             setAddressError('No address selected. Please select an address or enter a new one.');
+            const data = new FormData(e.currentTarget);
+            const address = {
+                firstName: data.get("firstName"),
+                lastName: data.get("lastName"),
+                streetAddress: data.get("address"),
+                city: data.get("city"),
+                state: data.get("state"),
+                zipCode: data.get("zip"),
+                mobile: data.get("phoneNumber")
+            }
+            setSelectedAddress(address);
             return;
         }
 
@@ -37,16 +48,18 @@ const DeliveryAddressForm = () => {
         console.log("address", selectedAddress);
     };
 
+
+
     return (
         <div>
             <Grid container spacing={4}>
                 <Grid xs={12} lg={5} className="border rounded-e-md shadow-md h-[30.5rem] overflow-y-scroll">
-                    <div className="p-5 py-7 border-b cursor-pointer">
+                    <div className="p-5 border-b cursor-pointer py-7">
                         <div className="space-y-4">
                             {/* Show all linked addresses */}
                             {auth.user?.address.length > 0 ? (
                                 auth.user.address.map((item) => (
-                                    <div key={item._id} className="shadow-md border border-gray-700 rounded-md p-4 mt-4">
+                                    <div key={item._id} className="p-4 mt-4 border border-gray-700 rounded-md shadow-md">
                                         <AddressCard address={item} />
                                         <Button
                                             sx={{ mt: 1, bgcolor: "RGB(145 85 253)" }}
@@ -67,7 +80,7 @@ const DeliveryAddressForm = () => {
                     </div>
                 </Grid>
                 <Grid item xs={12} lg={7}>
-                    <Box className='border rounded-s-md shadow-md p-5'>
+                    <Box className='p-5 border shadow-md rounded-s-md'>
                         <form onSubmit={handleSubmit}>
                             {addressError && (
                                 <Typography color="error" variant="body2" sx={{ mb: 2 }}>

@@ -8,6 +8,7 @@ import RegisterPage from "./customer/pages/RegisterPage";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
+import { API_BASE_URL } from "./config/apiConfig";
 
 function GradientCircularProgress() {
   return (
@@ -51,7 +52,7 @@ function App() {
     // Step 3: Ping the backend to check server status (optional)
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://api-kt-bcf1.onrender.com");
+        const response = await axios.get(API_BASE_URL);
         // You can dispatch actions here if needed
         console.log("Backend responded:", response.data);
       } catch (error) {
