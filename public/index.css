@@ -74,7 +74,6 @@ body *:not(.numbers) {
 ::-webkit-scrollbar-thumb {
   background: rgba(186, 90, 241, 0.863);
   border-radius: 4px; /* Softly rounded corners */
-  transition: background 0.15s linear; /* Smooth interaction effect */
 }
 
 ::-webkit-scrollbar-thumb:hover {
