@@ -62,3 +62,29 @@ body *:not(.numbers) {
 .animated-text {
   animation: rainbow 3s infinite;
 }
+/* Minimalist and Popular Scrollbar Design */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Transparent or very subtle */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(186, 90, 241, 0.863);
+  border-radius: 4px; /* Softly rounded corners */
+  transition: background 0.15s linear; /* Smooth interaction effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(172, 55, 187); /* Slightly darker on hover */
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgb(145, 51, 199); /* More pronounced during active state */
+}
+
+html {
+  scroll-behavior: smooth;
+}

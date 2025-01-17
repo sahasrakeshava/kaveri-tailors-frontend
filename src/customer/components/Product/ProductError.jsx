@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-const ErrorPage = ({ category }) => {
+const ErrorPage = () => {
     return (
         <Box
             sx={{

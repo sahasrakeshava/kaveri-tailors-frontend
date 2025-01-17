@@ -8,6 +8,7 @@ import RegisterPage from "./customer/pages/RegisterPage";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
+import { motion } from "framer-motion";
 import { API_BASE_URL } from "./config/apiConfig";
 
 function GradientCircularProgress() {
@@ -33,27 +34,22 @@ function App() {
   const role = auth?.user?.role; // Extract the role of the user
 
   const [loading, setLoading] = useState(true);
+  const [scrolling, setScrolling] = useState(false);
 
   useEffect(() => {
-    // Check URL for user data and token
     const queryParams = new URLSearchParams(window.location.search);
     const user = queryParams.get("user");
     const token = queryParams.get("token");
 
     if (user && token) {
-      // Step 1: Decode the user data and token from the URL parameters
       const decodedUser = JSON.parse(decodeURIComponent(user));
-
-      // Step 2: Store the decoded user data and token in localStorage
       localStorage.setItem("user", JSON.stringify(decodedUser));
       localStorage.setItem("jwt", token);
     }
 
-    // Step 3: Ping the backend to check server status (optional)
     const fetchData = async () => {
       try {
         const response = await axios.get(API_BASE_URL);
-        // You can dispatch actions here if needed
         console.log("Backend responded:", response.data);
       } catch (error) {
         console.error("Error pinging backend:", error);
@@ -63,10 +59,19 @@ function App() {
     };
 
     fetchData();
-  }, []); // Empty dependency array ensures this runs only once when the component mounts
+  }, []);
+
+  // Detect scrolling
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolling(true);
+      setTimeout(() => setScrolling(false), 500); // Reset after 500ms
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   if (loading) {
-    // Display a loading spinner or placeholder while the backend is being pinged
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
         <GradientCircularProgress />
@@ -76,7 +81,20 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <motion.div
+      className="App"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      {/* Framer Motion Animation for Scrollbar Interaction */}
+      <motion.div
+        className="scrollbar-overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: scrolling ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+      />
+
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -95,7 +113,7 @@ function App() {
           <Route path="/*" element={<Navigate to="/admin" replace />} />
         )}
       </Routes>
-    </div>
+    </motion.div>
   );
 }
 
