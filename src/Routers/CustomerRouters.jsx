@@ -11,6 +11,7 @@ import HomePage from "../customer/pages/HomePage/HomePage";
 import PaymentSuccess from '../customer/components/Payment/PaymentSuccess';
 import Navigation from "../customer/components/Navigation/Navigation.jsx";
 import ErrorPage from './error'; // Ensure the import name matches the file export
+import Profile from '../customer/components/Profile/Profile.jsx';
 
 const CustomerRouters = () => {
     return (
@@ -29,6 +30,7 @@ const CustomerRouters = () => {
                     <Route path="/product/:productId" element={<ProductDetails />} />
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/payment/:orderId" element={<PaymentSuccess />} />
+                    <Route path="/account" element={<Profile />} />
                     <Route path="/account/order" element={<Order />} />
                     <Route path="/account/order/:orderId" element={<OrderDetails />} />
 

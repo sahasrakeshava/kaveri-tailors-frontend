@@ -178,7 +178,7 @@ export default function Navigation() {
                       <Button
                         className="w-full text-left"
                         onClick={() => {
-                          navigate("/profile");
+                          navigate("/account");
                           setOpen(false);
                         }}
                       >
@@ -365,7 +365,7 @@ export default function Navigation() {
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
+                        <MenuItem onClick={() => navigate("/account")}>Profile</MenuItem>
                         <MenuItem onClick={() => navigate("/account/order")}>My Orders</MenuItem>
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </Menu>

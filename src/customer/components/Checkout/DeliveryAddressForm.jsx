@@ -29,17 +29,6 @@ const DeliveryAddressForm = () => {
 
         if (!selectedAddress) {
             setAddressError('No address selected. Please select an address or enter a new one.');
-            const data = new FormData(e.currentTarget);
-            const address = {
-                firstName: data.get("firstName"),
-                lastName: data.get("lastName"),
-                streetAddress: data.get("address"),
-                city: data.get("city"),
-                state: data.get("state"),
-                zipCode: data.get("zip"),
-                mobile: data.get("phoneNumber")
-            }
-            setSelectedAddress(address);
             return;
         }
 
@@ -48,7 +37,22 @@ const DeliveryAddressForm = () => {
         console.log("address", selectedAddress);
     };
 
-
+    const handleformSubmit = (e) => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
+        const address = {
+            firstName: data.get("firstName"),
+            lastName: data.get("lastName"),
+            streetAddress: data.get("address"),
+            city: data.get("city"),
+            state: data.get("state"),
+            zipCode: data.get("zip"),
+            mobile: data.get("phoneNumber")
+        }
+        const orderData = { address, navigate }
+        dispatch(createOrder(orderData))
+        console.log("address", address);
+    }
 
     return (
         <div>
@@ -65,7 +69,7 @@ const DeliveryAddressForm = () => {
                                             sx={{ mt: 1, bgcolor: "RGB(145 85 253)" }}
                                             variant="contained"
                                             size="small"
-                                            onClick={() => handleSelectAddress(item)}
+                                            onClick={() => handleSelectAddress(item).then(handleSubmit)}
                                         >
                                             Select This Address
                                         </Button>
@@ -81,13 +85,7 @@ const DeliveryAddressForm = () => {
                 </Grid>
                 <Grid item xs={12} lg={7}>
                     <Box className='p-5 border shadow-md rounded-s-md'>
-                        <form onSubmit={handleSubmit}>
-                            {addressError && (
-                                <Typography color="error" variant="body2" sx={{ mb: 2 }}>
-                                    {addressError}
-                                </Typography>
-                            )}
-
+                        <form onSubmit={handleformSubmit}>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField

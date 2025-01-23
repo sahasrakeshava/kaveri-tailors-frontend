@@ -1,12 +1,15 @@
 import axios from "axios";
 
-export const API_BASE_URL = "http://localhost:3001";
+export const API_BASE_URL = "https://api-kt-bcf1.onrender.com";
 const jwt = localStorage.getItem("jwt");
 console.log("jwt:", jwt);
-export const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    Authorization: `Bearer ${jwt}`,
-    "Content-Type": "application/json",
+export const api = axios.create(
+  {
+    baseURL: API_BASE_URL,
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      "Content-Type": "application/json",
+    },
   },
-});
+  console.log("jwt:", jwt)
+);
