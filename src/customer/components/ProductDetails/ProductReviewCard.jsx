@@ -1,17 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Avatar, Box, Grid, Rating } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { getUserById } from '../../../State/Auth/Action'
 const ProductReviewCard = ({ reviews }) => {
-    const { auth } = useSelector(store => store)
-
-    const dispatch = useDispatch()
-    useEffect(() => {
-        const userId = reviews?.user._id
-        console.log("user:", userId)
-        dispatch(getUserById(userId))
-    }, [reviews])
+    const auth = reviews?.user
     return (
 
         <div>
@@ -24,7 +15,7 @@ const ProductReviewCard = ({ reviews }) => {
                 <Grid item xs={9}>
                     <div className="space-y-2">
                         <div>
-                            <p className='text-lg font-semibold'>{auth?.user?.firstName || 'ks'}</p>
+                            <p className='text-lg font-semibold'>{auth?.firstName || 'ks'}</p>
                             <p className='opacity-80'>{new Date(reviews?.createdAt).toLocaleDateString()}</p>
                         </div>
                     </div>

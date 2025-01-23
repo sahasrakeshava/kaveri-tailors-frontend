@@ -92,9 +92,9 @@ export default function ProductDetails() {
 
     const handleAddToCart = () => {
         const data = { productId: params.productId, size: selectedSize.name, title: products?.product?.title, user: auth.user?._id }
-        console.log("data:", data)
-        dispatch(addItemToCart(data))
-        navigate("/cart")
+        console.log("data:", reviews?.reviews)
+        //dispatch(addItemToCart(data))
+        // navigate("/cart")
     }
 
     useEffect(() => {
