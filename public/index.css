@@ -1,0 +1,89 @@
+html,
+body {
+  margin: 0; /* This removes default margin */
+  padding: 0;
+  height: 100vh; /* Ensure the body takes the full height */
+}
+
+body {
+  background-color: #f9f9f9; /* Light gray for a clean background */
+  font-family: Arial, sans-serif; /* Standard sans-serif for readability */
+  color: #333333; /* Dark gray for primary text */
+}
+@keyframes gradientAnimation {
+  0% {
+    background: linear-gradient(290deg, #ff9e80, #ffffff);
+  }
+  50% {
+    background: linear-gradient(290deg, #ffccbc, #ffffff);
+  }
+  100% {
+    background: linear-gradient(290deg, #ff9e80, #ffffff);
+  }
+}
+/* Apply a different font for numbers */
+.numbers {
+  font-family: "Arial", sans-serif !important; /* Change to your preferred font for numbers */
+}
+
+/* Optional: Target numbers globally inside body */
+body *:not(.numbers) {
+  font-family: "JetBrains Mono", monospace !important;
+}
+/* Add this to your global CSS file or component CSS module */
+
+@keyframes rainbow {
+  0% {
+    color: red;
+  }
+  14% {
+    color: orange;
+  }
+  28% {
+    color: yellow;
+  }
+  42% {
+    color: green;
+  }
+  57% {
+    color: blue;
+  }
+  71% {
+    color: indigo;
+  }
+  85% {
+    color: violet;
+  }
+  100% {
+    color: red;
+  }
+}
+
+.animated-text {
+  animation: rainbow 3s infinite;
+}
+/* Minimalist and Popular Scrollbar Design */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Transparent or very subtle */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(186, 90, 241, 0.863);
+  border-radius: 4px; /* Softly rounded corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(172, 55, 187); /* Slightly darker on hover */
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgb(145, 51, 199); /* More pronounced during active state */
+}
+
+html {
+  scroll-behavior: smooth;
+}
